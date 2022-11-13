@@ -230,6 +230,8 @@ namespace fa {
 
   private:
 
+	bool DepthFirstSearch_empty(std::set<int> v,int s ) const; 
+
     std::set<char> alphabet;
     std::map<int,std::pair<bool,bool>> states;
     std::map<std::pair<int,char>,std::vector<int>> transitions;

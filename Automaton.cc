@@ -282,7 +282,7 @@ namespace fa {
 	}
 	
 
-	bool Automaton::DepthFirstSearch_empty(std::set<int> v,int s ){
+	bool Automaton::DepthFirstSearch_empty(std::set<int> v,int s )const{
 		v.insert(s);
 		for( auto i : transitions){
 			if(i.first.first == s){
@@ -315,7 +315,6 @@ namespace fa {
 			}
 		}
 		if(!init || !final){
-			std::cout << "true" << std::endl;
 			return true;
 		}
 		
@@ -352,7 +351,7 @@ namespace fa {
     bigBrother.alphabet=automaton.alphabet;
 
     for( auto it : automaton.transitions){
-      for(int i = 0 ; i < it.second.size(); ++i){
+      for(auto i = 0u ; i < it.second.size(); ++i){
         bigBrother.addTransition(it.second[i],it.first.second,it.first.first);
       }
     }
@@ -393,7 +392,7 @@ namespace fa {
     //if(!glados.isDeterministic()){glados = glados.deterministic();}
     if(!glados.isComplete()){glados = glados.createComplete(glados);}
 
-    for(int i = 0 ; i < glados.states.size(); ++i){
+    for(auto i = 0u ; i < glados.states.size(); ++i){
       (glados.states[i].second ? glados.states[i].second = false: glados.states[i].second = true );
     }
       
