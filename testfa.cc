@@ -1,4 +1,3 @@
-
 #include "gtest/gtest.h"
 
 #include "Automaton.h"
@@ -692,7 +691,7 @@ TEST(createComplement, noCompletNoDeterministic){
 	fa::Automaton fa;
 
 	static const std::vector<char> tab = {'a','b','c'};
-	createAutomaton(fa,4,tab);
+	createAutomaton(fa,5,tab);
 	
 	fa.setStateInitial(0);
 	fa.setStateFinal(3);
@@ -701,7 +700,7 @@ TEST(createComplement, noCompletNoDeterministic){
 	EXPECT_TRUE(fa.addTransition(0,'a',2));
 	EXPECT_TRUE(fa.addTransition(1,'c',3));
 	EXPECT_TRUE(fa.addTransition(2,'a',2));
-	EXPECT_TRUE(fa.addTransition(5,'a',2));
+	EXPECT_TRUE(fa.addTransition(4,'a',2));
 
 	EXPECT_EQ(3,fa.countSymbols());
 	EXPECT_TRUE(fa.isValid());
@@ -727,7 +726,7 @@ TEST(createComplement, noInitialState){
 	createAutomaton(fa,1,tab);
 	
 	EXPECT_TRUE(fa.addTransition(0,'a',0));
-	fa.setStateInitial(0);
+	fa.setStateFinal(0);
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.isComplete());
@@ -738,14 +737,15 @@ TEST(createComplement, noInitialState){
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isComplete());
 
-	EXPECT_TRUE(fa.isLanguageEmpty());
+	EXPECT_FALSE(fa.isLanguageEmpty());
+	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaa"));
 }
 
 TEST(createComplement,noFinalState){
 	fa::Automaton fa;
 
 	static const std::vector<char> tab = {'a','b','c'};
-	createAutomaton(fa,4,tab);
+	createAutomaton(fa,5,tab);
 	
 	fa.setStateInitial(0);
 	
@@ -753,7 +753,7 @@ TEST(createComplement,noFinalState){
 	EXPECT_TRUE(fa.addTransition(0,'a',2));
 	EXPECT_TRUE(fa.addTransition(1,'c',3));
 	EXPECT_TRUE(fa.addTransition(2,'a',2));
-	EXPECT_TRUE(fa.addTransition(5,'a',2));
+	EXPECT_TRUE(fa.addTransition(4,'a',2));
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.isComplete());
@@ -771,7 +771,7 @@ TEST(createComplement,Complement2Times){
 	fa::Automaton fa;
 
 	static const std::vector<char> tab = {'a','b','c'};
-	createAutomaton(fa,4,tab);
+	createAutomaton(fa,5,tab);
 	
 	fa.setStateInitial(0);
 	fa.setStateFinal(3);
@@ -780,7 +780,7 @@ TEST(createComplement,Complement2Times){
 	EXPECT_TRUE(fa.addTransition(0,'a',2));
 	EXPECT_TRUE(fa.addTransition(1,'c',3));
 	EXPECT_TRUE(fa.addTransition(2,'a',2));
-	EXPECT_TRUE(fa.addTransition(5,'a',2));
+	EXPECT_TRUE(fa.addTransition(4,'a',2));
 
 	EXPECT_EQ(3,fa.countSymbols());
 	EXPECT_TRUE(fa.isValid());
@@ -828,18 +828,22 @@ TEST(createMirror, valid) {
 	EXPECT_TRUE(fa.addTransition(2,'b',2));
 	EXPECT_TRUE(fa.addTransition(2,'b',0));
 	
-
+	
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_EQ(5,fa.countTransitions());
 	EXPECT_EQ(2,fa.countSymbols());
 	EXPECT_FALSE(fa.match("bab"));
 	EXPECT_TRUE(fa.match("aba"));
-
+	EXPECT_TRUE(fa.match("a"));
+	EXPECT_FALSE(fa.match("ba"));
+	
 	fa = fa.createMirror(fa);
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_TRUE(fa.match("bab"));
-	EXPECT_FALSE(fa.match("aba"));
+	EXPECT_FALSE(fa.match("bab"));
+	EXPECT_TRUE(fa.match("aba"));
+	EXPECT_TRUE(fa.match("ba"));
+	EXPECT_TRUE(fa.match("a"));
 	EXPECT_EQ(5,fa.countTransitions());
 	EXPECT_EQ(2,fa.countSymbols());
 
@@ -1017,12 +1021,9 @@ TEST(removeNonAccessibleStates,NoInitialState){
 
 	fa.removeNonAccessibleStates();
 	
-	for(int i = 0; i< 10;++i){
-		EXPECT_FALSE(fa.hasState(i));
-	}
-
-	EXPECT_EQ(0,fa.countStates());
-	EXPECT_FALSE(fa.isValid());
+	EXPECT_EQ(1,fa.countStates());
+	EXPECT_TRUE(fa.isLanguageEmpty());
+	EXPECT_TRUE(fa.isValid());
 }
 
 TEST(removeNonAccessibleStates, noNonAccessiblesStates){
@@ -1036,12 +1037,12 @@ TEST(removeNonAccessibleStates, noNonAccessiblesStates){
 	EXPECT_TRUE(fa.addTransition(2,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(4,fa.countStates());
 
 	fa.removeNonAccessibleStates();
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(4,fa.countStates());
 
 
 }
@@ -1058,14 +1059,14 @@ TEST(removeNonAccessibleStates, lastNoAccessible){
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(4,fa.countStates());
 	EXPECT_EQ(3,fa.countTransitions());
 
 	fa.removeNonAccessibleStates();
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.hasState(3));
-	EXPECT_EQ(2,fa.countStates());
+	EXPECT_EQ(3,fa.countStates());
 	EXPECT_EQ(2,fa.countTransitions());
 
 
@@ -1078,20 +1079,17 @@ TEST(removeNonAccessibleStates, chained){
 	
 	fa.setStateInitial(0);
 	
-	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',1));
 	EXPECT_TRUE(fa.addTransition(1,'a',2));
 	EXPECT_TRUE(fa.addTransition(2,'a',3));
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countStates());
-	EXPECT_EQ(3,fa.countTransitions());
+	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(4,fa.countTransitions());
 
 	fa.removeNonAccessibleStates();
 
-	for(int i = 1 ; i < 4;++i){
-		EXPECT_FALSE(fa.hasState(i));
-	}
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_EQ(1,fa.countStates());
@@ -1114,15 +1112,15 @@ TEST(removeNonCoAccessibleStates,noFinalState){
 	EXPECT_TRUE(fa.addTransition(2,'a',3));
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
-	EXPECT_TRUE(fa.isValid);
+	EXPECT_TRUE(fa.isValid());
 	EXPECT_EQ(4,fa.countTransitions());
 	EXPECT_EQ(4,fa.countStates());
 
 	fa.removeNonCoAccessibleStates();
 	
-	EXPECT_FALSE(fa.isValid());
+	EXPECT_TRUE(fa.isValid());
 	EXPECT_EQ(0,fa.countTransitions());
-	EXPECT_EQ(0,fa.countStates());
+	EXPECT_EQ(1,fa.countStates());
 }
 
 
@@ -1138,7 +1136,7 @@ TEST(removeNonCoAccessibleStates,noNonCoAccessiblesState){
 	EXPECT_TRUE(fa.addTransition(2,'a',3));
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
-	EXPECT_TRUE(fa.isValid);
+	EXPECT_TRUE(fa.isValid());
 	EXPECT_EQ(4,fa.countTransitions());
 	EXPECT_EQ(4,fa.countStates());
 
@@ -1181,7 +1179,7 @@ TEST(removeNonCoAccessibleStates,firstStateNoCoAccessible){
 TEST(createProduct,validOne){
 	fa::Automaton lhs;
 	static const std::vector<char> tab = {'a','b'};
-	createAutomaton(fa,2,tab);
+	createAutomaton(lhs,2,tab);
 	
 	lhs.setStateFinal(1);
 	lhs.setStateInitial(0);
@@ -1193,8 +1191,7 @@ TEST(createProduct,validOne){
 	
 
 	fa::Automaton rhs;
-	static const std::vector<char> tab = {'a','b'};
-	createAutomaton(fa,2,tab);
+	createAutomaton(rhs,2,tab);
 	
 	rhs.setStateFinal(1);
 	rhs.setStateInitial(0);
