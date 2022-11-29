@@ -56,10 +56,8 @@ namespace fa {
         it = transitions.erase(it);
       }else{
         removeTransition(it->first.first,it->first.second,state);
-        it++;
+		it = transitions.end();
       }
-      
-      
     }
 
     return true;
@@ -95,18 +93,15 @@ namespace fa {
 
   bool Automaton::addTransition(int from, char alpha, int to){
     if(!hasState(from) || !hasState(to)){
-      //std::printf("1\n");
       return false;
     }
 
     if(hasTransition(from,alpha,to)){
-      //std::printf("2\n");
       return false;
     }
 
 
     if(!hasSymbol(alpha) && fa::Epsilon != alpha){
-      //std::printf("3 - %d\n",hasSymbol(alpha));
       return false;
     }
 
@@ -129,6 +124,11 @@ namespace fa {
     auto result = transitions.find({from,alpha});
     auto iterator = std::find(result->second.begin(),result->second.end(),to);
 
+	if(result->second.size() == 1){
+		transitions.erase({from,alpha});
+		return true;
+	}
+	
     return result->second.erase(iterator) != result->second.end();
   }
 
@@ -261,7 +261,6 @@ namespace fa {
   }
 
   bool Automaton::isComplete() const{
-
     for (auto i : states){
       for (auto itt : alphabet){
         if (transitions.find({i.first,itt}) == transitions.end()){
@@ -274,7 +273,7 @@ namespace fa {
   }
 
 	void Automaton::removeNonAccessibleStates(){
-
+		
 	}
 
 	void Automaton::removeNonCoAccessibleStates(){
@@ -419,6 +418,6 @@ namespace fa {
     return other;
   }
 
-
+	
 
 }

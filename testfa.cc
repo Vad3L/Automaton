@@ -11,7 +11,6 @@
   Private method generateAutomaton
 */
 void createAutomaton(fa::Automaton& mamiRobot,int nbState, std::vector<char> diction){
-
   for(int i = 0 ; i < nbState ; ++i){
     EXPECT_TRUE(mamiRobot.addState(i));
     EXPECT_TRUE(mamiRobot.hasState(i));
@@ -20,19 +19,17 @@ void createAutomaton(fa::Automaton& mamiRobot,int nbState, std::vector<char> dic
     EXPECT_TRUE(mamiRobot.addSymbol(diction[i]));
     EXPECT_TRUE(mamiRobot.hasSymbol(diction[i]));
   }
-  
 }
 
 
 
 
-void testDotPrint(const fa::Automaton& mamiRobot,std::string file){
-  std::string const fichier("./img/"+file+".dot");  //On ouvre le fichier
-  std::ofstream monFlux(fichier.c_str());
-
-  //dot -Tpng figure2.dot -o figure2.png
-  mamiRobot.dotPrint(monFlux);
-}
+/* void testDotPrint(const fa::Automaton& mamiRobot,std::string file){ */
+/*   std::string const fichier("./img/"+file+".dot");  //On ouvre le fichier */
+/*   std::ofstream monFlux(fichier.c_str()); */
+/*   //dot -Tpng figure2.dot -o figure2.png */
+/*   mamiRobot.dotPrint(monFlux); */
+/* } */
 
 TEST(createComplete, test) {
   fa::Automaton fa;
@@ -40,7 +37,7 @@ TEST(createComplete, test) {
   fa.setStateInitial(0);
   fa.addTransition(0,'a',1);
   fa.addTransition(1,'a',0);
-  testDotPrint(fa,"test");
+  /* testDotPrint(fa,"test"); */
   EXPECT_TRUE(fa.isDeterministic());
 }
 
@@ -262,6 +259,23 @@ TEST(setStateInitial, AlreadyInitial) {
   EXPECT_TRUE(fa.isStateInitial(1));
   fa.setStateInitial(1);
   EXPECT_TRUE(fa.isStateInitial(1));
+}
+
+TEST(setStateInitial, ReadEmptyString) {
+	fa::Automaton fa;
+	std::vector<char> tab= {};
+	createAutomaton(fa,150,tab);
+	
+	fa.setStateInitial(7);
+	fa.setStateInitial(13);
+	fa.setStateInitial(19);
+
+
+	EXPECT_TRUE(fa.isStateInitial(7));
+	EXPECT_TRUE(fa.isStateInitial(13));
+	EXPECT_TRUE(fa.isStateInitial(19));
+	
+
 }
 
 
@@ -570,6 +584,20 @@ TEST(isComplete, NoTransition) {
   EXPECT_TRUE(fa.isValid());
   EXPECT_FALSE(fa.isComplete());
 }
+
+TEST(isComplete, AddedRemovedTransition){
+	fa:: Automaton fa;
+
+	static const std::vector<char> tab = {'a'};
+	createAutomaton(fa,1,tab);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	EXPECT_TRUE(fa.removeTransition(0,'a',0));
+	
+	EXPECT_FALSE(fa.isComplete());
+
+}
+
 /**
   createComplete
 */
@@ -614,7 +642,7 @@ TEST(createComplete, noComplet) {
   EXPECT_TRUE(fa.isValid());
   EXPECT_TRUE(fa.isComplete());
 
-  testDotPrint(fa,"figure4");
+  /* testDotPrint(fa,"figure4"); */
 
 }
 
@@ -641,9 +669,9 @@ TEST(createComplement, valid) {
   EXPECT_TRUE(fa.isComplete());
   EXPECT_TRUE(fa.isDeterministic());
 
-  /*std::string motReconnus = "aaabb";
+  std::string motReconnus = "aaabb";
   EXPECT_TRUE(fa.match(motReconnus));
-  */
+  
   fa = fa.createComplement(fa);
   
   EXPECT_TRUE(fa.isValid());
@@ -653,16 +681,133 @@ TEST(createComplement, valid) {
   EXPECT_EQ(2u,fa.countSymbols());
   EXPECT_TRUE(fa.hasSymbol('a'));
   EXPECT_TRUE(fa.hasSymbol('b'));
-  EXPECT_TRUE(fa.isStateFinal(0));
-  EXPECT_TRUE(fa.isStateFinal(2));
-  EXPECT_FALSE(fa.isStateFinal(1));
-  EXPECT_TRUE(fa.isStateInitial(0));
-  //EXPECT_FALSE(fa.match(motReconnus));
-  //EXPECT_TRUE(fa.match("bbbba"));
-
+  EXPECT_FALSE(fa.match(motReconnus));
+  EXPECT_TRUE(fa.match("bbbba"));
   //testDotPrint(fa,"complement");
 
 }
+
+
+TEST(createComplement, noCompletNoDeterministic){
+	fa::Automaton fa;
+
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	fa.setStateFinal(3);
+	
+	EXPECT_TRUE(fa.addTransition(0,'b',1));
+	EXPECT_TRUE(fa.addTransition(0,'a',2));
+	EXPECT_TRUE(fa.addTransition(1,'c',3));
+	EXPECT_TRUE(fa.addTransition(2,'a',2));
+	EXPECT_TRUE(fa.addTransition(5,'a',2));
+
+	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.isComplete());
+
+	EXPECT_FALSE(fa.match("c"));
+	EXPECT_FALSE(fa.match("bac"));
+	
+	fa = fa.createComplement(fa);
+	
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_TRUE(fa.isComplete());
+	
+	EXPECT_TRUE(fa.match("c"));
+	EXPECT_TRUE(fa.match("bac"));
+}
+
+TEST(createComplement, noInitialState){
+	fa::Automaton fa;
+
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,1,tab);
+	
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	fa.setStateInitial(0);
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.isComplete());
+
+	EXPECT_TRUE(fa.isLanguageEmpty());
+	fa = fa.createComplement(fa);
+	
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_TRUE(fa.isComplete());
+
+	EXPECT_TRUE(fa.isLanguageEmpty());
+}
+
+TEST(createComplement,noFinalState){
+	fa::Automaton fa;
+
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	
+	EXPECT_TRUE(fa.addTransition(0,'b',1));
+	EXPECT_TRUE(fa.addTransition(0,'a',2));
+	EXPECT_TRUE(fa.addTransition(1,'c',3));
+	EXPECT_TRUE(fa.addTransition(2,'a',2));
+	EXPECT_TRUE(fa.addTransition(5,'a',2));
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.isComplete());
+	EXPECT_TRUE(fa.isLanguageEmpty());
+	
+	fa = fa.createComplement(fa);
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.isLanguageEmpty());
+	EXPECT_TRUE(fa.isComplete());
+
+}
+
+TEST(createComplement,Complement2Times){
+	fa::Automaton fa;
+
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	fa.setStateFinal(3);
+	
+	EXPECT_TRUE(fa.addTransition(0,'b',1));
+	EXPECT_TRUE(fa.addTransition(0,'a',2));
+	EXPECT_TRUE(fa.addTransition(1,'c',3));
+	EXPECT_TRUE(fa.addTransition(2,'a',2));
+	EXPECT_TRUE(fa.addTransition(5,'a',2));
+
+	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.isComplete());
+
+	EXPECT_FALSE(fa.match("c"));
+	EXPECT_FALSE(fa.match("bac"));
+	
+	fa = fa.createComplement(fa);
+	
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_TRUE(fa.isComplete());
+	
+	EXPECT_TRUE(fa.match("c"));
+	EXPECT_TRUE(fa.match("bac"));
+	
+	fa = fa.createComplement(fa);
+		
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_TRUE(fa.isComplete());
+
+	EXPECT_FALSE(fa.match("c"));
+	EXPECT_FALSE(fa.match("bac"));
+}
+
 
 
 
@@ -670,30 +815,83 @@ TEST(createComplement, valid) {
   create a mirror automate 
 */
 TEST(createMirror, valid) {
-  fa::Automaton fa;
-  static const std::vector<char> tab = {'a','b'};
-  createAutomaton(fa,3,tab);
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,3,tab);
 
-  fa.setStateInitial(0);
-  fa.setStateFinal(2);
+	fa.setStateInitial(0);
+	fa.setStateFinal(2);
 
-  EXPECT_TRUE(fa.addTransition(0,'a',1));
-  EXPECT_TRUE(fa.addTransition(0,'a',2));
-  EXPECT_TRUE(fa.addTransition(1,'b',2));
-  EXPECT_TRUE(fa.addTransition(2,'b',2));
-  EXPECT_TRUE(fa.addTransition(2,'b',0));
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(0,'a',2));
+	EXPECT_TRUE(fa.addTransition(1,'b',2));
+	EXPECT_TRUE(fa.addTransition(2,'b',2));
+	EXPECT_TRUE(fa.addTransition(2,'b',0));
+	
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(5,fa.countTransitions());
+	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_FALSE(fa.match("bab"));
+	EXPECT_TRUE(fa.match("aba"));
+
+	fa = fa.createMirror(fa);
 	
 	EXPECT_TRUE(fa.isValid());
-  //EXPECT_FALSE(fa.match("bab"));
-  //EXPECT_TRUE(fa.match("aba"));
-  testDotPrint(fa,"mirror1");
+	EXPECT_TRUE(fa.match("bab"));
+	EXPECT_FALSE(fa.match("aba"));
+	EXPECT_EQ(5,fa.countTransitions());
+	EXPECT_EQ(2,fa.countSymbols());
 
-  fa = fa.createMirror(fa);
+  /* testDotPrint(fa,"mirror2"); */
+}
+
+TEST(createMirror, NoTransition){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,3,tab);
+
+	fa.setStateInitial(0);
+	fa.setStateFinal(2);
+	
 	EXPECT_TRUE(fa.isValid());
-  //EXPECT_TRUE(fa.match("bab"));
-  //EXPECT_FALSE(fa.match("aba"));
+	EXPECT_EQ(0,fa.countTransitions());
+	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_TRUE(fa.isLanguageEmpty());
 
-  testDotPrint(fa,"mirror2");
+	fa = fa.createMirror(fa);
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(0,fa.countTransitions());
+	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_TRUE(fa.isLanguageEmpty());
+}
+
+TEST(createMirror, stateInitioFinal){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,1,tab);
+
+	fa.setStateInitial(0);
+	fa.setStateFinal(0);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	
+	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_EQ(1,fa.countStates());
+	EXPECT_EQ(1,fa.countTransitions());
+	
+	fa = fa.createMirror(fa);
+	
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_EQ(1,fa.countStates());
+	EXPECT_EQ(1,fa.countTransitions());
+	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+
 }
 
 /**
@@ -772,12 +970,49 @@ TEST(isLanguageEmpty, noValidAutomateExem){
 	EXPECT_FALSE(fa.isLanguageEmpty());
 }
 
+TEST(isLanguageEmpty, initialStateIsFinal){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,3,tab);
+
+	fa.setStateInitial(0);
+	fa.setStateFinal(0);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'b',1));
+	EXPECT_TRUE(fa.addTransition(1,'c',2));
+	EXPECT_TRUE(fa.addTransition(1,'c',0));
+	EXPECT_TRUE(fa.addTransition(2,'a',0));
+
+	EXPECT_TRUE(fa.isValid());
+
+	EXPECT_FALSE(fa.isLanguageEmpty());
+}
+
+TEST(isLanguageEmpty, EmptyWord){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,3,tab);
+
+	fa.setStateInitial(0);
+	fa.setStateFinal(0);
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.isLanguageEmpty());
+
+}
+
+
+/*
+ * removeNonAccessibleStates
+ */
+
 
 
 
 /*
  * prettyPrint modelisation
- */
+ *//*
 TEST(prettyPrint, Figure1Automatedexemple) {
   fa::Automaton fa;
   static const std::vector<char> tab = {'a','b'};
@@ -846,7 +1081,7 @@ TEST(prettyPrint, Figure2Automatedexemple) {
   //dot -Tpng figure2.dot -o figure2.png
   fa.dotPrint(monFlux);
 }
-
+*/
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
