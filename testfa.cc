@@ -1006,8 +1006,213 @@ TEST(isLanguageEmpty, EmptyWord){
 /*
  * removeNonAccessibleStates
  */
+TEST(removeNonAccessibleStates,NoInitialState){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,10,tab);
+	
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_TRUE(fa.isLanguageEmpty());
+	EXPECT_EQ(10,fa.countStates());
+
+	fa.removeNonAccessibleStates();
+	
+	for(int i = 0; i< 10;++i){
+		EXPECT_FALSE(fa.hasState(i));
+	}
+
+	EXPECT_EQ(0,fa.countStates());
+	EXPECT_FALSE(fa.isValid());
+}
+
+TEST(removeNonAccessibleStates, noNonAccessiblesStates){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+
+	fa.setStateInitial(0);
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+	EXPECT_TRUE(fa.addTransition(2,'a',3));
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countStates());
+
+	fa.removeNonAccessibleStates();
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countStates());
 
 
+}
+
+
+TEST(removeNonAccessibleStates, lastNoAccessible){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+
+	fa.setStateInitial(0);
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+	EXPECT_TRUE(fa.addTransition(3,'a',3));
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3,fa.countTransitions());
+
+	fa.removeNonAccessibleStates();
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.hasState(3));
+	EXPECT_EQ(2,fa.countStates());
+	EXPECT_EQ(2,fa.countTransitions());
+
+
+}
+
+TEST(removeNonAccessibleStates, chained){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+	EXPECT_TRUE(fa.addTransition(2,'a',3));
+	EXPECT_TRUE(fa.addTransition(3,'a',3));
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3,fa.countTransitions());
+
+	fa.removeNonAccessibleStates();
+
+	for(int i = 1 ; i < 4;++i){
+		EXPECT_FALSE(fa.hasState(i));
+	}
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(1,fa.countStates());
+	EXPECT_EQ(0,fa.countTransitions());
+
+}
+
+
+/*
+ * removeNonCoAccessibleStates
+ */
+TEST(removeNonCoAccessibleStates,noFinalState){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+	EXPECT_TRUE(fa.addTransition(2,'a',3));
+	EXPECT_TRUE(fa.addTransition(3,'a',3));
+
+	EXPECT_TRUE(fa.isValid);
+	EXPECT_EQ(4,fa.countTransitions());
+	EXPECT_EQ(4,fa.countStates());
+
+	fa.removeNonCoAccessibleStates();
+	
+	EXPECT_FALSE(fa.isValid());
+	EXPECT_EQ(0,fa.countTransitions());
+	EXPECT_EQ(0,fa.countStates());
+}
+
+
+TEST(removeNonCoAccessibleStates,noNonCoAccessiblesState){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	fa.setStateFinal(3);
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+	EXPECT_TRUE(fa.addTransition(2,'a',3));
+	EXPECT_TRUE(fa.addTransition(3,'a',3));
+
+	EXPECT_TRUE(fa.isValid);
+	EXPECT_EQ(4,fa.countTransitions());
+	EXPECT_EQ(4,fa.countStates());
+
+	fa.removeNonCoAccessibleStates();
+	
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(4,fa.countTransitions());
+	EXPECT_EQ(4,fa.countStates());
+}
+
+TEST(removeNonCoAccessibleStates,firstStateNoCoAccessible){
+
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b','c'};
+	createAutomaton(fa,4,tab);
+	
+	fa.setStateInitial(0);
+	fa.setStateFinal(3);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+	EXPECT_TRUE(fa.addTransition(2,'a',3));
+	EXPECT_TRUE(fa.addTransition(3,'a',3));
+	
+	EXPECT_TRUE(fa.isValid());
+
+	fa.removeNonCoAccessibleStates();
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_FALSE(fa.hasState(0));
+	EXPECT_EQ(3,fa.countStates());
+}
+
+
+
+
+/*
+ *	createProduct
+ */
+TEST(createProduct,validOne){
+	fa::Automaton lhs;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,2,tab);
+	
+	lhs.setStateFinal(1);
+	lhs.setStateInitial(0);
+
+	EXPECT_TRUE(lhs.addTransition(0,'a',1));
+	EXPECT_TRUE(lhs.addTransition(1,'a',1));
+	EXPECT_TRUE(lhs.addTransition(1,'b',1));
+
+	
+
+	fa::Automaton rhs;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,2,tab);
+	
+	rhs.setStateFinal(1);
+	rhs.setStateInitial(0);
+
+	EXPECT_TRUE(rhs.addTransition(0,'a',0));
+	EXPECT_TRUE(rhs.addTransition(0,'b',1));
+	EXPECT_TRUE(rhs.addTransition(1,'b',1));
+	EXPECT_TRUE(rhs.addTransition(1,'a',0));
+
+	fa::Automaton fa = fa.createProduct(lhs,rhs);
+
+	EXPECT_TRUE(fa.isValid());
+	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(9,fa.countTransitions());
+	EXPECT_TRUE(fa.match("aaabbb"));
+
+
+}
 
 
 /*
