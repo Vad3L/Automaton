@@ -2081,7 +2081,7 @@ TEST(createMinimalMoore,td5ex17AlreadyCompletAndDeterministic){
 	EXPECT_TRUE(faa.isValid());
 	EXPECT_TRUE(faa.isComplete());
 	EXPECT_TRUE(faa.isDeterministic());
-	EXPECT_EQ(3,faa.countStates)
+	EXPECT_EQ(3,faa.countStates());
 
 	EXPECT_TRUE(fa.isIncludedIn(faa));
 	EXPECT_TRUE(faa.isIncludedIn(fa));
@@ -2179,7 +2179,7 @@ TEST(createMinimalBrzozowski,td5ex17AlreadyCompletAndDeterministic){
 	EXPECT_TRUE(faa.isValid());
 	EXPECT_TRUE(faa.isComplete());
 	EXPECT_TRUE(faa.isDeterministic());
-	EXPECT_EQ(3,faa.countStates)
+	EXPECT_EQ(3,faa.countStates());
 
 	EXPECT_TRUE(fa.isIncludedIn(faa));
 	EXPECT_TRUE(faa.isIncludedIn(fa));
