@@ -331,8 +331,31 @@ namespace fa {
     return false;
   }
 
+	std::set<int> Automaton::readSymbols(const std::set<int> sete,char a) const{
+		std::set<int> res;
+		
+		for(auto i : sete){
+			for(auto st : states){
+				if(hasTransition(i,a,st.first)){
+					res.insert(st.first);
+				}
+			}
+		}
+
+		return res;
+	}
+
   std::set<int> Automaton::readString(const std::string& word) const{
     std::set<int> sI;
+	for(auto i : states){
+		if(i.second.first){
+			sI.insert(i.first);
+		}
+	}
+
+	for(auto a : word){
+		sI = readSymbols(sI,a);		
+	}
     return sI;
   }
 

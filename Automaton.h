@@ -231,6 +231,8 @@ namespace fa {
   private:
 
 	bool DepthFirstSearch_empty(std::set<int> v,int s ) const; 
+	
+	std::set<int> readSymbols(const std::set<int> sete,char a) const;
 
     std::set<char> alphabet;
     std::map<int,std::pair<bool,bool>> states;
