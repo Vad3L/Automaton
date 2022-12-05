@@ -4,7 +4,7 @@
 #include <cctype>
 #include <ostream>
 #include <iostream>
-
+#include <fstream>
 
 namespace fa {
 
@@ -24,11 +24,12 @@ namespace fa {
       return false;
     }
     for (auto it = transitions.begin(); it != transitions.end();){
-      if (it->first.second == symbol)
+      if (it->first.second == symbol){
         it = transitions.erase(it);
-      else
+	  }else{
         ++it;
-    }
+      }
+	} 
     
     return true;
   }
@@ -47,20 +48,28 @@ namespace fa {
   }
 
   bool Automaton::removeState(int state){
-
     if(states.erase(state) != 1){
       return false;
     }
-    for (auto it = transitions.begin(); it != transitions.end();){
-      if (it->first.first == state){
-        it = transitions.erase(it);
-      }else{
-        removeTransition(it->first.first,it->first.second,state);
-		it = transitions.end();
-      }
-    }
+	
+	for(auto a : alphabet){
+		transitions.erase({state,a});
+	}
+    
+	std::set<std::pair<int,char>> rem ;
+	for(auto f : transitions){
+		for(auto a : f.second){
+			if(a == state){
+				rem.insert(f.first);
+			}
+		}
+	}
 
-    return true;
+	for(auto e : rem ){
+		removeTransition(e.first,e.second,state);
+	}
+
+	return true;
   } 
 
   
@@ -273,16 +282,57 @@ namespace fa {
   }
 
 	void Automaton::removeNonAccessibleStates(){
+		std::set<int>  r;
+		for(auto f : states){
+			r.insert(f.first);
+		}
+		std::set<int> si = getInitialState();
+		if(si.size() == 0){
+			for(auto a : r ){
+				removeState(a);
+			}
+			addState(0);
+			setStateInitial(0);
+			return;
+		}
 		
+		std::set<int> visited;
+		for(int lo : si){
+			DepthFirstSearch(visited,lo);
+		}
+		std::set<int> notVisited;
+		std::set_difference(begin(r),end(r),begin(visited),end(visited),inserter(notVisited,end(notVisited)));
+		
+		for(auto fe:notVisited){
+			removeState(fe);
+		}
+
 	}
 
 	void Automaton::removeNonCoAccessibleStates(){
-	
+		*this=createMirror(*this);
+		removeNonAccessibleStates();
+		*this=createMirror(*this);
 	}
+	
+	void Automaton::DepthFirstSearch(std::set<int>& v,int s )const{
+		v.insert(s);
+		for( auto i : transitions){
+			if(i.first.first == s){
+				for(int x : i.second){
+					if(v.find(x) == v.end()){
+						DepthFirstSearch(v,x);
+					}
+				}
+			}
+		}
+	}
+
 	
 
 	bool Automaton::DepthFirstSearch_empty(std::set<int> v,int s )const{
 		v.insert(s);
+		bool var =true;
 		for( auto i : transitions){
 			if(i.first.first == s){
 				for(int x : i.second){
@@ -290,12 +340,12 @@ namespace fa {
 						return false;
 					}
 					if(v.find(x) == v.end()){
-						return DepthFirstSearch_empty(v,x);
+						var =  DepthFirstSearch_empty(v,x);
 					}
 				}
 			}
 		}
-		return true;
+		return var;
 	}
 
 	bool Automaton::isLanguageEmpty() const{
@@ -313,6 +363,15 @@ namespace fa {
 				final = true;
 			}
 		}
+		
+		for(auto ff : tabStateInit){
+			for(auto aa : tabStateFinal){
+				if(ff == aa){
+					return false;
+				}
+			}
+		}
+
 		if(!init || !final){
 			return true;
 		}
@@ -328,7 +387,19 @@ namespace fa {
 	}
 
   bool Automaton::hasEmptyIntersectionWith(const Automaton& other) const{
-    return false;
+		
+		std::string const fichier1("./img/other.dot");  //On ouvre le fichier
+		std::ofstream monFlux1(fichier1.c_str());
+  //dot -Tpng figure2.dot -o figure2.png
+		other.dotPrint(monFlux1);
+
+	  fa::Automaton mrCuisine = createProduct(*this,other);
+
+		std::string const fichier("./img/mrCuisine.dot");  //On ouvre le fichier
+		std::ofstream monFlux(fichier.c_str());
+  //dot -Tpng figure2.dot -o figure2.png
+		mrCuisine.dotPrint(monFlux);
+		return mrCuisine.isLanguageEmpty();
   }
 
 	std::set<int> Automaton::readSymbols(const std::set<int> sete,char a) const{
@@ -345,14 +416,28 @@ namespace fa {
 		return res;
 	}
 
-  std::set<int> Automaton::readString(const std::string& word) const{
-    std::set<int> sI;
-	for(auto i : states){
-		if(i.second.first){
-			sI.insert(i.first);
+	std::set<int> Automaton::getInitialState() const{
+		std::set<int> sI;
+		for(auto i : states){
+			if(i.second.first){
+				sI.insert(i.first);
+			}
 		}
+		return sI;
 	}
 
+	std::set<int> Automaton::getFinalState() const{
+		std::set<int> sI;
+		for(auto i : states){
+			if(i.second.second){
+				sI.insert(i.first);
+			}
+		}
+		return sI;
+	}
+
+  std::set<int> Automaton::readString(const std::string& word) const{
+	std::set<int> sI = getInitialState();
 	for(auto a : word){
 		sI = readSymbols(sI,a);		
 	}
@@ -360,11 +445,22 @@ namespace fa {
   }
 
   bool Automaton::match(const std::string& word) const{
-    return false;
+	std::set<int> res = readString(word);
+
+	for(auto a : states){
+		for(auto x : res){
+			if(a.first == x){
+				if(a.second.second){return true;}
+			}
+		}
+	}
+
+	return false;
   }
 
   bool Automaton::isIncludedIn(const Automaton& other) const{
-    return false;
+	fa::Automaton dyson = createComplement(other);
+    return hasEmptyIntersectionWith(dyson);
   }
 
   Automaton Automaton::createMirror(const Automaton& automaton){
@@ -378,8 +474,51 @@ namespace fa {
       }
     }
 
+	std::set<int> finale = bigBrother.getFinalState();
+	std::set<int> init = bigBrother.getInitialState();
+
+	for(auto a : finale){
+		auto i = bigBrother.states.find(a);
+		if(!i->second.first){
+			i->second.first = true;
+			i->second.second = false;
+		}
+	}
+
+	for(auto a : init){
+		auto i = bigBrother.states.find(a);
+		if(!i->second.second){
+			i->second.first = false;
+			i->second.second = true;
+		}
+	}
+
+
     return bigBrother;
   }
+
+	int Automaton::findBinState() const{
+		for( auto x : states){
+			std::set<int> res;
+			for(auto a : transitions){
+				for( auto f : alphabet){
+					if(a.first.first == x.first && a.first.second == f && !x.second.second){
+						for(auto m : a.second){
+							res.insert(m);
+						}
+					}
+				}
+			}
+			if(res.size() == 1 ){
+				for (auto g : res){
+					if(g == x.first){return g;}
+				}
+			}
+		}
+
+
+		return -1;
+	}
 
   Automaton Automaton::createComplete(const Automaton& automaton){
     if (automaton.isComplete()){
@@ -388,10 +527,19 @@ namespace fa {
 
     fa::Automaton create = automaton;
 
-    int binState = 0;
-    while(!create.addState(binState)){
-      binState++;
-    }
+    int binState = create.findBinState();
+	if(binState < 0){
+		binState = 0;
+		while(create.hasState(binState)){
+			binState++;
+		}
+		create.addState(binState);
+	}
+	for(auto a : create.states){
+		if(a.first == binState){
+			a.second.second = true;
+		} 
+	}
 
     for (auto itt : create.alphabet){
       create.addTransition(binState,itt,binState);
@@ -405,30 +553,136 @@ namespace fa {
       } 
     }
 
+
     return create;
   }
 
 
   Automaton Automaton::createComplement(const Automaton& automaton){
     fa::Automaton  glados = automaton;
-    //if(!glados.isDeterministic()){glados = glados.deterministic();}
-    if(!glados.isComplete()){glados = glados.createComplete(glados);}
+    bool var =true;
+	if(!glados.isDeterministic()){glados = createDeterministic(glados);}
+    if(!glados.isComplete()){var = false;glados = createComplete(glados);}
+	std::set<int> init = glados.getInitialState();
+	if(init.size() == 0){
+		glados.states.begin()->second.first = true;
+	}
 
     for(auto i = 0u ; i < glados.states.size(); ++i){
       (glados.states[i].second ? glados.states[i].second = false: glados.states[i].second = true );
     }
+	if(!var){
+		int binState = glados.findBinState();
+		for(auto i = 0u ; i < glados.states.size(); ++i){
+			if(i == binState){
+				glados.states[i].second=true;}
+		}
+	}
       
     return glados;
   }
 
 
+
   Automaton Automaton::createProduct(const Automaton& lhs, const Automaton& rhs){
-    return rhs;
+		fa::Automaton bosch ;
+		std::set_intersection(begin(lhs.alphabet),end(lhs.alphabet),begin(rhs.alphabet),end(rhs.alphabet),inserter(bosch.alphabet,end(bosch.alphabet)));
+		
+		int compt =  0; 
+		std::map<std::pair<int,int>,int> visited;
+
+		for(auto l : lhs.states){
+			for(auto r : rhs.states){
+				if(l.second.first && r.second.first){
+					visited.insert({std::make_pair(l.first,r.first),compt});
+					bosch.addState(compt);
+					bosch.setStateInitial(compt);
+					compt++;
+				}
+			}
+		}
+
+		for(auto bd : visited){
+			for(auto a : bosch.alphabet){
+				std::set<int> stockG = lhs.readSymbols({bd.first.first},a);
+				std::set<int> stockD = rhs.readSymbols({bd.first.second},a);
+				for(auto p : stockG){
+					for(auto v : stockD){
+						auto findKey = visited.find(std::make_pair(p,v));
+						if(findKey == visited.end()){
+							visited.insert({std::make_pair(p,v),compt});
+							bosch.addState(compt);
+							bosch.addTransition(bd.second,a,compt);
+							compt++;
+						}else{
+							bosch.addTransition(bd.second,a,findKey->second);
+						}
+					}
+				}
+			}
+		}
+
+		for(auto bd : visited){
+			if(lhs.isStateFinal(bd.first.first) && rhs.isStateFinal(bd.first.second)){
+				bosch.setStateFinal(bd.second);
+			}
+		}
+		if(!bosch.countStates()){
+			bosch.addState(0);
+		}
+		if(!bosch.countSymbols()){
+			bosch.addSymbol('a');
+		}
+
+
+		return bosch;
   }
 
 
   Automaton Automaton::createDeterministic(const Automaton& other){
-    return other;
+	fa::Automaton moulinex;
+	moulinex.alphabet = other.alphabet;
+
+	std::map<int,std::set<int>> bd;
+	int compt = 0;
+
+	bd.insert({compt,other.getInitialState()});
+	moulinex.addState(compt);
+	moulinex.setStateInitial(compt);
+	compt++;
+
+	for(auto bdd : bd){
+		for(auto a : moulinex.alphabet){
+			std::set<int> stock = other.readSymbols(bdd.second,a);
+			bool var = false;
+			for(auto key : bd){
+				if(key.second == stock){
+					moulinex.addTransition(bdd.first,a,key.first);
+					var = true;
+				}
+			}
+			if(!var){
+				bd.insert({compt,stock});
+				moulinex.addState(compt);
+				moulinex.addTransition(bdd.first,a,compt);
+				compt++;
+			}
+		}
+	}
+	
+	for(auto bdd :bd){
+		for(auto aze : bdd.second){
+			if(other.isStateFinal(aze)){
+				moulinex.setStateFinal(bdd.first);
+				break;
+			}
+		}
+	}
+
+
+	
+
+	return moulinex;
   }
 
 
@@ -437,9 +691,21 @@ namespace fa {
   }
 
 
-  Automaton Automaton::createMinimalBrzozowski(const Automaton& other){
-    return other;
-  }
+	Automaton Automaton::createMinimalBrzozowski(const Automaton& other){
+		fa::Automaton thermomix = other;
+		
+		thermomix = createMirror(thermomix);
+		
+		thermomix = createDeterministic(thermomix);
+	
+		thermomix = createMirror(thermomix);
+		thermomix = createDeterministic(thermomix);
+	
+		thermomix = createComplete(thermomix);
+	
+		
+		return thermomix;
+	}
 
 	
 

@@ -231,8 +231,14 @@ namespace fa {
   private:
 
 	bool DepthFirstSearch_empty(std::set<int> v,int s ) const; 
-	
+	void DepthFirstSearch(std::set<int>& v,int s )const;
+
+	int findBinState() const;
+
+	std::set<int> getFinalState() const;
+	std::set<int> getInitialState() const;
 	std::set<int> readSymbols(const std::set<int> sete,char a) const;
+	
 
     std::set<char> alphabet;
     std::map<int,std::pair<bool,bool>> states;

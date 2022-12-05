@@ -1,9 +1,9 @@
 digraph Automaton {
 	 rankdir=LR
-	n0[shape=none label="" height=0 width=0 ]
-	n0->0
-	0[shape=circle]
-	2[shape=doublecircle]
+	0[shape=doublecircle]
+	n2[shape=none label="" height=0 width=0 ]
+	n2->2
+	2[shape=circle]
 	node [shape = circle]
 	0
 	1

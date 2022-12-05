@@ -3,7 +3,6 @@
 #include "Automaton.h"
 #include <fstream>
 #include <iostream>
-
 #define BIG_SIZE 1000
 
 /**
@@ -23,12 +22,12 @@ void createAutomaton(fa::Automaton& mamiRobot,int nbState, std::vector<char> dic
 
 
 
-/* void testDotPrint(const fa::Automaton& mamiRobot,std::string file){ */
-/*   std::string const fichier("./img/"+file+".dot");  //On ouvre le fichier */
-/*   std::ofstream monFlux(fichier.c_str()); */
-/*   //dot -Tpng figure2.dot -o figure2.png */
-/*   mamiRobot.dotPrint(monFlux); */
-/* } */
+void testDotPrint(const fa::Automaton& mamiRobot,std::string file){
+  std::string const fichier("./img/"+file+".dot");  //On ouvre le fichier
+  std::ofstream monFlux(fichier.c_str());
+  //dot -Tpng figure2.dot -o figure2.png
+  mamiRobot.dotPrint(monFlux);
+}
 
 TEST(createComplete, test) {
   fa::Automaton fa;
@@ -447,6 +446,23 @@ TEST(removeTransition, ByTheRemovedSecondState) {
   EXPECT_FALSE(fa.hasTransition(0,'a',1));
 }
 
+TEST(removeTransition,OriginRemove){
+	fa::Automaton fa;
+
+	static const std::vector<char> tab {'a'};
+	createAutomaton(fa,3,tab);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+
+	EXPECT_TRUE(fa.removeTransition(0,'a',1));
+	EXPECT_TRUE(fa.hasTransition(0,'a',0));
+	EXPECT_FALSE(fa.hasTransition(0,'a',1));
+	EXPECT_TRUE(fa.hasTransition(1,'a',1));
+}
+
 /*
  * hasTransition
  */
@@ -733,11 +749,11 @@ TEST(createComplement, noInitialState){
 
 	EXPECT_TRUE(fa.isLanguageEmpty());
 	fa = fa.createComplement(fa);
-	
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isComplete());
 
 	EXPECT_FALSE(fa.isLanguageEmpty());
+	EXPECT_TRUE(fa.hasTransition(0,'a',0));
 	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaa"));
 }
 
@@ -803,7 +819,6 @@ TEST(createComplement,Complement2Times){
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_EQ(3,fa.countSymbols());
 	EXPECT_TRUE(fa.isComplete());
-
 	EXPECT_FALSE(fa.match("c"));
 	EXPECT_FALSE(fa.match("bac"));
 }
@@ -839,6 +854,7 @@ TEST(createMirror, valid) {
 	
 	fa = fa.createMirror(fa);
 	
+	
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.match("bab"));
 	EXPECT_TRUE(fa.match("aba"));
@@ -847,7 +863,6 @@ TEST(createMirror, valid) {
 	EXPECT_EQ(5,fa.countTransitions());
 	EXPECT_EQ(2,fa.countSymbols());
 
-  /* testDotPrint(fa,"mirror2"); */
 }
 
 TEST(createMirror, NoTransition){
@@ -1020,7 +1035,7 @@ TEST(removeNonAccessibleStates,NoInitialState){
 	EXPECT_EQ(10,fa.countStates());
 
 	fa.removeNonAccessibleStates();
-	
+	std::cout << "la\n";
 	EXPECT_EQ(1,fa.countStates());
 	EXPECT_TRUE(fa.isLanguageEmpty());
 	EXPECT_TRUE(fa.isValid());
@@ -1192,6 +1207,8 @@ TEST(createProduct,sameAutomate){
 	fa::Automaton rhs = lhs;
 	fa::Automaton fa = fa.createProduct(lhs,rhs);
 	
+
+
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.isLanguageEmpty());
 	EXPECT_TRUE(fa.match("b"));
@@ -1654,6 +1671,48 @@ TEST(readString,twoInitialStates){
 
 }
 
+TEST(readString,loop1){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,3,tab);
+
+	fa.setStateInitial(0);
+	fa.setStateFinal(2);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',0));
+	EXPECT_TRUE(fa.addTransition(1,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+
+	fa.readString("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+}
+
+TEST(readString,loop2){
+	fa::Automaton fa;
+	static const std::vector<char> tab = {'a','b'};
+	createAutomaton(fa,6,tab);
+
+	fa.setStateInitial(0);
+	fa.setStateFinal(2);
+
+	EXPECT_TRUE(fa.addTransition(0,'a',0));
+	EXPECT_TRUE(fa.addTransition(0,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',0));
+	EXPECT_TRUE(fa.addTransition(1,'a',1));
+	EXPECT_TRUE(fa.addTransition(1,'a',2));
+
+	EXPECT_TRUE(fa.addTransition(2,'a',3));
+	
+	EXPECT_TRUE(fa.addTransition(3,'b',3));
+	EXPECT_TRUE(fa.addTransition(3,'b',4));
+	EXPECT_TRUE(fa.addTransition(4,'b',3));
+	EXPECT_TRUE(fa.addTransition(4,'b',4));
+	EXPECT_TRUE(fa.addTransition(4,'b',5));
+	EXPECT_TRUE(fa.addTransition(5,'a',2));
+
+	fa.readString("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbba");
+}
 
 /*
  * match
@@ -1986,6 +2045,7 @@ TEST(isIncludedIn,loopA){
 /*
  * createMinimalMoore
  */
+
 TEST(createMinimalMoore,AlreadyMinimal){
 	fa::Automaton fa;
 	static const std::vector<char> tab = {'a','b'};
@@ -2180,7 +2240,7 @@ TEST(createMinimalBrzozowski,td5ex17AlreadyCompletAndDeterministic){
 
 /*
  * prettyPrint modelisation
- *//*
+ */
 TEST(prettyPrint, Figure1Automatedexemple) {
   fa::Automaton fa;
   static const std::vector<char> tab = {'a','b'};
@@ -2249,7 +2309,7 @@ TEST(prettyPrint, Figure2Automatedexemple) {
   //dot -Tpng figure2.dot -o figure2.png
   fa.dotPrint(monFlux);
 }
-*/
+
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
