@@ -330,8 +330,9 @@ namespace fa {
 
 	
 
-	bool Automaton::DepthFirstSearch_empty(std::set<int> v,int s )const{
+	bool Automaton::DepthFirstSearch_empty(std::set<int>& v,int s )const{
 		v.insert(s);
+
 		bool var =true;
 		for( auto i : transitions){
 			if(i.first.first == s){
@@ -339,8 +340,9 @@ namespace fa {
 					if(isStateFinal(x)){
 						return false;
 					}
-					if(v.find(x) == v.end()){
-						var =  DepthFirstSearch_empty(v,x);
+					if(var && v.find(x) == v.end()){
+						
+						var = DepthFirstSearch_empty(v,x);
 					}
 				}
 			}
@@ -382,23 +384,13 @@ namespace fa {
 				return false;
 			}	
 		}
-
+		
 		return true;
 	}
 
   bool Automaton::hasEmptyIntersectionWith(const Automaton& other) const{
 		
-		std::string const fichier1("./img/other.dot");  //On ouvre le fichier
-		std::ofstream monFlux1(fichier1.c_str());
-  //dot -Tpng figure2.dot -o figure2.png
-		other.dotPrint(monFlux1);
-
 	  fa::Automaton mrCuisine = createProduct(*this,other);
-
-		std::string const fichier("./img/mrCuisine.dot");  //On ouvre le fichier
-		std::ofstream monFlux(fichier.c_str());
-  //dot -Tpng figure2.dot -o figure2.png
-		mrCuisine.dotPrint(monFlux);
 		return mrCuisine.isLanguageEmpty();
   }
 
@@ -458,9 +450,21 @@ namespace fa {
 	return false;
   }
 
-  bool Automaton::isIncludedIn(const Automaton& other) const{
-	fa::Automaton dyson = createComplement(other);
-    return hasEmptyIntersectionWith(dyson);
+  /* bool Automaton::isIncludedIn(const Automaton& other) const{ */
+	  /* fa::Automaton terminator = createComplement(other); */
+	  /* return hasEmptyIntersectionWith(terminator); */
+  /* } */
+
+
+  bool Automaton::isIncludedIn(const Automaton& other) const {
+    fa::Automaton fa = other;
+    for(auto alpha : alphabet) {
+      if(!fa.hasSymbol(alpha)) {
+        fa.addSymbol(alpha);
+      }
+    }
+	
+    return hasEmptyIntersectionWith(fa::Automaton::createComplement(fa));
   }
 
   Automaton Automaton::createMirror(const Automaton& automaton){
@@ -560,24 +564,21 @@ namespace fa {
 
   Automaton Automaton::createComplement(const Automaton& automaton){
     fa::Automaton  glados = automaton;
-    bool var =true;
 	if(!glados.isDeterministic()){glados = createDeterministic(glados);}
-    if(!glados.isComplete()){var = false;glados = createComplete(glados);}
-	std::set<int> init = glados.getInitialState();
-	if(init.size() == 0){
-		glados.states.begin()->second.first = true;
-	}
+    if(!glados.isComplete()){glados = createComplete(glados);}
 
     for(auto i = 0u ; i < glados.states.size(); ++i){
       (glados.states[i].second ? glados.states[i].second = false: glados.states[i].second = true );
     }
-	if(!var){
-		int binState = glados.findBinState();
-		for(auto i = 0u ; i < glados.states.size(); ++i){
-			if(i == binState){
-				glados.states[i].second=true;}
-		}
-	}
+
+
+	/* if(!var){ */
+	/* 	int binState = glados.findBinState(); */
+	/* 	for(auto i = 0 ; i <(int)glados.states.size(); ++i){ */
+	/* 		if(i == binState){ */
+	/* 			glados.states[i].second=true;} */
+	/* 	} */
+	/* } */
       
     return glados;
   }
@@ -640,6 +641,7 @@ namespace fa {
 
 
   Automaton Automaton::createDeterministic(const Automaton& other){
+	if(other.isDeterministic()){return other;}
 	fa::Automaton moulinex;
 	moulinex.alphabet = other.alphabet;
 
@@ -685,9 +687,148 @@ namespace fa {
 	return moulinex;
   }
 
+  std::vector<std::pair<char,std::vector<int>>> Automaton::rempliTableauMoor(const Automaton& copy,std::vector<std::pair<char,std::vector<int>>> n,std::vector<int> sta){
+	for(char a : copy.alphabet){
+		  std::vector<int> ligne;
+		  for(int cmp = 0 ;  cmp < (int)sta.size() ; ++cmp){
+			  auto fi = copy.transitions.find({sta[cmp],a});
+			  int cmp2 = 0;
+			  for(auto edf : sta){
+				  if(edf == fi->second[0]){
+					  ligne.push_back(n[0].second[cmp2]);
+				  }
+				  cmp2++;
+			  }
+		  }
+		  
+		  n.push_back(std::make_pair(a,ligne));
+	  }
+	return n;
+  }
+
+	std::vector<int> Automaton::returnLigne0Tab(std::vector<std::pair<char,std::vector<int>>> tabAvant){
+		std::vector<int> res;
+		std::vector<std::vector<int>> tabtab;
+		size_t size = tabAvant[0].second.size();
+		for(size_t i = 0 ; i < size;++i){
+			std::vector<int> column;
+			for(auto a :tabAvant){
+				for(size_t e = 0; e < a.second.size();e++){
+					if(e == i){
+						column.push_back(a.second[e]);
+					}
+				}
+			}
+			tabtab.push_back(column);
+		}
+	
+		std::vector<std::pair<int,std::vector<int>>> column;
+		int compt = 1;
+		for(auto a : tabtab){
+			if(column.size() == 0){
+				res.push_back(1);
+				column.push_back({compt,a});
+				compt++;
+			}else{
+				bool var = true;
+				for(auto c : column){
+					if(a == c.second){
+						res.push_back(c.first);
+						var = false;
+					}
+				}
+				if(var){
+					res.push_back(compt);
+					column.push_back({compt,a});
+			 		compt++;
+				}
+			}
+
+		}
+		
+		return res;
+	}
+
+	void Automaton::printMinimalMooreStepTab(std::vector<std::pair<char,std::vector<int>>> nZero,int& count){
+		std::cout << std::endl;
+	  for(auto a : nZero){
+		  std::cout << "|";
+		  if(a.first == '~'){
+			  std::cout << a.first << count;
+			  count++;
+		  }else{
+			  std::cout << a.first << " ";
+		  }
+		  std::cout << "|";
+		  for(auto e : a.second){
+			  std::cout << e << "|";
+		  }
+		  std::cout << std::endl;
+	  }
+	  std::cout << std::endl;
+
+	}
 
   Automaton Automaton::createMinimalMoore(const Automaton& other){
-    return other;
+	  fa::Automaton copy =  other;
+	  copy.removeNonAccessibleStates();
+	  copy = createComplete(copy);
+	  copy = createDeterministic(copy);
+	  fa::Automaton R2D2;
+	  R2D2.alphabet = copy.alphabet;
+	  
+	  std::vector<int> sta;
+	  std::vector<std::pair<char,std::vector<int>>> nZero;
+	  std::vector<std::pair<char,std::vector<int>>> nPlusUn;
+		
+	  std::vector<int> res;
+	  for(auto e : copy.states){	  
+		  sta.push_back(e.first);
+		  if(copy.isStateFinal(e.first)){
+			  res.push_back(2);
+		  }else{
+			  res.push_back(1);
+		  }
+	  }
+
+	  nZero.push_back(std::make_pair('~',res));
+	  nZero=  rempliTableauMoor(copy,nZero,sta);
+	  nPlusUn.push_back(std::make_pair('~',returnLigne0Tab(nZero)));
+	  nPlusUn=  rempliTableauMoor(copy,nPlusUn,sta);
+
+
+	  while(nZero[0].second != nPlusUn[0].second){
+		  nZero=nPlusUn;
+		  std::vector<std::pair<char,std::vector<int>>> newe;
+		  newe.push_back(std::make_pair('~',returnLigne0Tab(nZero)));
+		  newe =  rempliTableauMoor(copy,newe,sta);
+		  nPlusUn = newe;
+	  }
+
+
+	for(int i = 0 ; i < (int)nPlusUn[0].second.size();++i){
+			R2D2.addState(nPlusUn[0].second[i]);
+			if(copy.isStateInitial(sta[i])){
+				R2D2.setStateInitial(nPlusUn[0].second[i]);
+			}
+			if(copy.isStateFinal(sta[i])){
+				R2D2.setStateFinal(nPlusUn[0].second[i]);
+			}
+	}
+	
+	for(auto ligne : nPlusUn){
+		if(ligne.first == '~'){continue;}
+		for(int i = 0 ; i < (int)ligne.second.size();++i){
+			R2D2.addTransition(nPlusUn[0].second[i],ligne.first,ligne.second[i]);
+		}
+	}
+	if(!R2D2.getInitialState().size()){
+		for(auto zaz : R2D2.states){
+			R2D2.setStateInitial(zaz.first);
+			break;
+		}
+	}
+	  return R2D2;
   }
 
 

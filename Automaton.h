@@ -230,7 +230,7 @@ namespace fa {
 
   private:
 
-	bool DepthFirstSearch_empty(std::set<int> v,int s ) const; 
+	bool DepthFirstSearch_empty(std::set<int>& v,int s ) const; 
 	void DepthFirstSearch(std::set<int>& v,int s )const;
 
 	int findBinState() const;
@@ -238,7 +238,10 @@ namespace fa {
 	std::set<int> getFinalState() const;
 	std::set<int> getInitialState() const;
 	std::set<int> readSymbols(const std::set<int> sete,char a) const;
-	
+	static void printMinimalMooreStepTab(std::vector<std::pair<char,std::vector<int>>> nZero,int& count);
+
+	static std::vector<std::pair<char,std::vector<int>>> rempliTableauMoor(const Automaton& copy,std::vector<std::pair<char,std::vector<int>>> n,std::vector<int> sta);
+	static std::vector<int> returnLigne0Tab(std::vector<std::pair<char,std::vector<int>>> tabAvant);
 
     std::set<char> alphabet;
     std::map<int,std::pair<bool,bool>> states;

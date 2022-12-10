@@ -1,0 +1,821 @@
+[0;32m[==========] [mRunning 125 tests from 30 test suites.
+[0;32m[----------] [mGlobal test environment set-up.
+[0;32m[----------] [m3 tests from createComplete
+[0;32m[ RUN      ] [mcreateComplete.test
+[0;32m[       OK ] [mcreateComplete.test (0 ms)
+[0;32m[ RUN      ] [mcreateComplete.alreadyComplet
+[0;32m[       OK ] [mcreateComplete.alreadyComplet (0 ms)
+[0;32m[ RUN      ] [mcreateComplete.noComplet
+[0;32m[       OK ] [mcreateComplete.noComplet (0 ms)
+[0;32m[----------] [m3 tests from createComplete (0 ms total)
+
+[0;32m[----------] [m1 test from Automaton
+[0;32m[ RUN      ] [mAutomaton.Empty
+[0;32m[       OK ] [mAutomaton.Empty (0 ms)
+[0;32m[----------] [m1 test from Automaton (0 ms total)
+
+[0;32m[----------] [m3 tests from isValid
+[0;32m[ RUN      ] [misValid.ValidAutomate
+[0;32m[       OK ] [misValid.ValidAutomate (0 ms)
+[0;32m[ RUN      ] [misValid.OneStateNoSymbol
+[0;32m[       OK ] [misValid.OneStateNoSymbol (0 ms)
+[0;32m[ RUN      ] [misValid.NoStateOneSymbol
+[0;32m[       OK ] [misValid.NoStateOneSymbol (0 ms)
+[0;32m[----------] [m3 tests from isValid (0 ms total)
+
+[0;32m[----------] [m4 tests from addSymbol
+[0;32m[ RUN      ] [maddSymbol.OneSymbol
+[0;32m[       OK ] [maddSymbol.OneSymbol (0 ms)
+[0;32m[ RUN      ] [maddSymbol.ManySymbols
+[0;32m[       OK ] [maddSymbol.ManySymbols (0 ms)
+[0;32m[ RUN      ] [maddSymbol.Epsilon
+[0;32m[       OK ] [maddSymbol.Epsilon (0 ms)
+[0;32m[ RUN      ] [maddSymbol.NoValideSymbol
+[0;32m[       OK ] [maddSymbol.NoValideSymbol (0 ms)
+[0;32m[----------] [m4 tests from addSymbol (0 ms total)
+
+[0;32m[----------] [m3 tests from removeSymbol
+[0;32m[ RUN      ] [mremoveSymbol.OneSymbol
+[0;32m[       OK ] [mremoveSymbol.OneSymbol (0 ms)
+[0;32m[ RUN      ] [mremoveSymbol.ManySymbols
+[0;32m[       OK ] [mremoveSymbol.ManySymbols (0 ms)
+[0;32m[ RUN      ] [mremoveSymbol.InvalidSymbol
+[0;32m[       OK ] [mremoveSymbol.InvalidSymbol (0 ms)
+[0;32m[----------] [m3 tests from removeSymbol (0 ms total)
+
+[0;32m[----------] [m2 tests from hasSymbol
+[0;32m[ RUN      ] [mhasSymbol.PresentSymbol
+[0;32m[       OK ] [mhasSymbol.PresentSymbol (0 ms)
+[0;32m[ RUN      ] [mhasSymbol.NoPresentSymbol
+[0;32m[       OK ] [mhasSymbol.NoPresentSymbol (0 ms)
+[0;32m[----------] [m2 tests from hasSymbol (0 ms total)
+
+[0;32m[----------] [m4 tests from addState
+[0;32m[ RUN      ] [maddState.OneState
+[0;32m[       OK ] [maddState.OneState (0 ms)
+[0;32m[ RUN      ] [maddState.ManyState
+[0;32m[       OK ] [maddState.ManyState (0 ms)
+[0;32m[ RUN      ] [maddState.StateALreadyExist
+[0;32m[       OK ] [maddState.StateALreadyExist (0 ms)
+[0;32m[ RUN      ] [maddState.NegativState
+[0;32m[       OK ] [maddState.NegativState (0 ms)
+[0;32m[----------] [m4 tests from addState (0 ms total)
+
+[0;32m[----------] [m3 tests from removeState
+[0;32m[ RUN      ] [mremoveState.OneSymbol
+[0;32m[       OK ] [mremoveState.OneSymbol (0 ms)
+[0;32m[ RUN      ] [mremoveState.ManySymbols
+[0;32m[       OK ] [mremoveState.ManySymbols (0 ms)
+[0;32m[ RUN      ] [mremoveState.InvalidSymbol
+[0;32m[       OK ] [mremoveState.InvalidSymbol (0 ms)
+[0;32m[----------] [m3 tests from removeState (0 ms total)
+
+[0;32m[----------] [m2 tests from hasState
+[0;32m[ RUN      ] [mhasState.PresentState
+[0;32m[       OK ] [mhasState.PresentState (0 ms)
+[0;32m[ RUN      ] [mhasState.NoPresentState
+[0;32m[       OK ] [mhasState.NoPresentState (0 ms)
+[0;32m[----------] [m2 tests from hasState (0 ms total)
+
+[0;32m[----------] [m5 tests from setStateInitial
+[0;32m[ RUN      ] [msetStateInitial.Valid
+[0;32m[       OK ] [msetStateInitial.Valid (0 ms)
+[0;32m[ RUN      ] [msetStateInitial.noInitial
+[0;32m[       OK ] [msetStateInitial.noInitial (0 ms)
+[0;32m[ RUN      ] [msetStateInitial.NoStateIndex
+[0;32m[       OK ] [msetStateInitial.NoStateIndex (0 ms)
+[0;32m[ RUN      ] [msetStateInitial.AlreadyInitial
+[0;32m[       OK ] [msetStateInitial.AlreadyInitial (0 ms)
+[0;32m[ RUN      ] [msetStateInitial.ReadEmptyString
+[0;32m[       OK ] [msetStateInitial.ReadEmptyString (0 ms)
+[0;32m[----------] [m5 tests from setStateInitial (0 ms total)
+
+[0;32m[----------] [m4 tests from setStateFinal
+[0;32m[ RUN      ] [msetStateFinal.Valid
+[0;32m[       OK ] [msetStateFinal.Valid (0 ms)
+[0;32m[ RUN      ] [msetStateFinal.NoStateIndex
+[0;32m[       OK ] [msetStateFinal.NoStateIndex (0 ms)
+[0;32m[ RUN      ] [msetStateFinal.AlreadyFinal
+[0;32m[       OK ] [msetStateFinal.AlreadyFinal (0 ms)
+[0;32m[ RUN      ] [msetStateFinal.FinalInitial
+[0;32m[       OK ] [msetStateFinal.FinalInitial (0 ms)
+[0;32m[----------] [m4 tests from setStateFinal (0 ms total)
+
+[0;32m[----------] [m6 tests from addTransition
+[0;32m[ RUN      ] [maddTransition.OneElement
+[0;32m[       OK ] [maddTransition.OneElement (0 ms)
+[0;32m[ RUN      ] [maddTransition.EpsilonTransition
+[0;32m[       OK ] [maddTransition.EpsilonTransition (0 ms)
+[0;32m[ RUN      ] [maddTransition.AlreadyExist
+[0;32m[       OK ] [maddTransition.AlreadyExist (0 ms)
+[0;32m[ RUN      ] [maddTransition.SymbolNotExist
+[0;32m[       OK ] [maddTransition.SymbolNotExist (0 ms)
+[0;32m[ RUN      ] [maddTransition.FirstStateNotExist
+[0;32m[       OK ] [maddTransition.FirstStateNotExist (0 ms)
+[0;32m[ RUN      ] [maddTransition.SecondStateNotExist
+[0;32m[       OK ] [maddTransition.SecondStateNotExist (0 ms)
+[0;32m[----------] [m6 tests from addTransition (0 ms total)
+
+[0;32m[----------] [m9 tests from removeTransition
+[0;32m[ RUN      ] [mremoveTransition.OneElement
+[0;32m[       OK ] [mremoveTransition.OneElement (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.SymbolNotExist
+[0;32m[       OK ] [mremoveTransition.SymbolNotExist (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.FirstStateNotExist
+[0;32m[       OK ] [mremoveTransition.FirstStateNotExist (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.SecondStateNotExist
+[0;32m[       OK ] [mremoveTransition.SecondStateNotExist (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.ByTheRemovedOfSymbol
+[0;32m[       OK ] [mremoveTransition.ByTheRemovedOfSymbol (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.ByTheRemovedFirstState
+[0;32m[       OK ] [mremoveTransition.ByTheRemovedFirstState (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.ByTheRemovedSecondState
+[0;32m[       OK ] [mremoveTransition.ByTheRemovedSecondState (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.OriginRemove
+[0;32m[       OK ] [mremoveTransition.OriginRemove (0 ms)
+[0;32m[ RUN      ] [mremoveTransition.Valid
+[0;32m[       OK ] [mremoveTransition.Valid (0 ms)
+[0;32m[----------] [m9 tests from removeTransition (0 ms total)
+
+[0;32m[----------] [m2 tests from hasEpsilonTransition
+[0;32m[ RUN      ] [mhasEpsilonTransition.OneValide
+[0;32m[       OK ] [mhasEpsilonTransition.OneValide (0 ms)
+[0;32m[ RUN      ] [mhasEpsilonTransition.NotIn
+[0;32m[       OK ] [mhasEpsilonTransition.NotIn (0 ms)
+[0;32m[----------] [m2 tests from hasEpsilonTransition (0 ms total)
+
+[0;32m[----------] [m4 tests from isDeterministic
+[0;32m[ RUN      ] [misDeterministic.Valid
+[0;32m[       OK ] [misDeterministic.Valid (0 ms)
+[0;32m[ RUN      ] [misDeterministic.NoInitialState
+[0;32m[       OK ] [misDeterministic.NoInitialState (0 ms)
+[0;32m[ RUN      ] [misDeterministic.TooManyInitialState
+[0;32m[       OK ] [misDeterministic.TooManyInitialState (0 ms)
+[0;32m[ RUN      ] [misDeterministic.TransitionError
+[0;32m[       OK ] [misDeterministic.TransitionError (0 ms)
+[0;32m[----------] [m4 tests from isDeterministic (0 ms total)
+
+[0;32m[----------] [m4 tests from isComplete
+[0;32m[ RUN      ] [misComplete.Valid
+[0;32m[       OK ] [misComplete.Valid (0 ms)
+[0;32m[ RUN      ] [misComplete.NoValid
+[0;32m[       OK ] [misComplete.NoValid (0 ms)
+[0;32m[ RUN      ] [misComplete.NoTransition
+[0;32m[       OK ] [misComplete.NoTransition (0 ms)
+[0;32m[ RUN      ] [misComplete.AddedRemovedTransition
+[0;32m[       OK ] [misComplete.AddedRemovedTransition (0 ms)
+[0;32m[----------] [m4 tests from isComplete (0 ms total)
+
+[0;32m[----------] [m5 tests from createComplement
+[0;32m[ RUN      ] [mcreateComplement.valid
+[0;32m[       OK ] [mcreateComplement.valid (0 ms)
+[0;32m[ RUN      ] [mcreateComplement.noCompletNoDeterministic
+[0;32m[       OK ] [mcreateComplement.noCompletNoDeterministic (0 ms)
+[0;32m[ RUN      ] [mcreateComplement.noInitialState
+[0;32m[       OK ] [mcreateComplement.noInitialState (0 ms)
+[0;32m[ RUN      ] [mcreateComplement.noFinalState
+[0;32m[       OK ] [mcreateComplement.noFinalState (0 ms)
+[0;32m[ RUN      ] [mcreateComplement.Complement2Times
+[0;32m[       OK ] [mcreateComplement.Complement2Times (0 ms)
+[0;32m[----------] [m5 tests from createComplement (0 ms total)
+
+[0;32m[----------] [m3 tests from createMirror
+[0;32m[ RUN      ] [mcreateMirror.valid
+[0;32m[       OK ] [mcreateMirror.valid (0 ms)
+[0;32m[ RUN      ] [mcreateMirror.NoTransition
+[0;32m[       OK ] [mcreateMirror.NoTransition (0 ms)
+[0;32m[ RUN      ] [mcreateMirror.stateInitioFinal
+[0;32m[       OK ] [mcreateMirror.stateInitioFinal (0 ms)
+[0;32m[----------] [m3 tests from createMirror (0 ms total)
+
+[0;32m[----------] [m7 tests from isLanguageEmpty
+[0;32m[ RUN      ] [misLanguageEmpty.validNoInitialState
+[0;32m[       OK ] [misLanguageEmpty.validNoInitialState (0 ms)
+[0;32m[ RUN      ] [misLanguageEmpty.validNoFinalState
+[0;32m[       OK ] [misLanguageEmpty.validNoFinalState (0 ms)
+[0;32m[ RUN      ] [misLanguageEmpty.validNoTransitionToFinalState
+[0;32m[       OK ] [misLanguageEmpty.validNoTransitionToFinalState (0 ms)
+[0;32m[ RUN      ] [misLanguageEmpty.noValid
+[0;32m[       OK ] [misLanguageEmpty.noValid (0 ms)
+[0;32m[ RUN      ] [misLanguageEmpty.noValidAutomateExem
+[0;32m[       OK ] [misLanguageEmpty.noValidAutomateExem (0 ms)
+[0;32m[ RUN      ] [misLanguageEmpty.initialStateIsFinal
+[0;32m[       OK ] [misLanguageEmpty.initialStateIsFinal (0 ms)
+[0;32m[ RUN      ] [misLanguageEmpty.EmptyWord
+[0;32m[       OK ] [misLanguageEmpty.EmptyWord (0 ms)
+[0;32m[----------] [m7 tests from isLanguageEmpty (0 ms total)
+
+[0;32m[----------] [m4 tests from removeNonAccessibleStates
+[0;32m[ RUN      ] [mremoveNonAccessibleStates.NoInitialState
+[0;32m[       OK ] [mremoveNonAccessibleStates.NoInitialState (0 ms)
+[0;32m[ RUN      ] [mremoveNonAccessibleStates.noNonAccessiblesStates
+[0;32m[       OK ] [mremoveNonAccessibleStates.noNonAccessiblesStates (0 ms)
+[0;32m[ RUN      ] [mremoveNonAccessibleStates.lastNoAccessible
+[0;32m[       OK ] [mremoveNonAccessibleStates.lastNoAccessible (0 ms)
+[0;32m[ RUN      ] [mremoveNonAccessibleStates.chained
+[0;32m[       OK ] [mremoveNonAccessibleStates.chained (0 ms)
+[0;32m[----------] [m4 tests from removeNonAccessibleStates (0 ms total)
+
+[0;32m[----------] [m3 tests from removeNonCoAccessibleStates
+[0;32m[ RUN      ] [mremoveNonCoAccessibleStates.noFinalState
+[0;32m[       OK ] [mremoveNonCoAccessibleStates.noFinalState (0 ms)
+[0;32m[ RUN      ] [mremoveNonCoAccessibleStates.noNonCoAccessiblesState
+[0;32m[       OK ] [mremoveNonCoAccessibleStates.noNonCoAccessiblesState (0 ms)
+[0;32m[ RUN      ] [mremoveNonCoAccessibleStates.firstStateNoCoAccessible
+[0;32m[       OK ] [mremoveNonCoAccessibleStates.firstStateNoCoAccessible (0 ms)
+[0;32m[----------] [m3 tests from removeNonCoAccessibleStates (0 ms total)
+
+[0;32m[----------] [m6 tests from createProduct
+[0;32m[ RUN      ] [mcreateProduct.sameAutomate
+[0;32m[       OK ] [mcreateProduct.sameAutomate (0 ms)
+[0;32m[ RUN      ] [mcreateProduct.EmptyProduct
+[0;32m[       OK ] [mcreateProduct.EmptyProduct (0 ms)
+[0;32m[ RUN      ] [mcreateProduct.lhsLanguageEmpty
+[0;32m[       OK ] [mcreateProduct.lhsLanguageEmpty (0 ms)
+[0;32m[ RUN      ] [mcreateProduct.rhsLanguageEmpty
+[0;32m[       OK ] [mcreateProduct.rhsLanguageEmpty (0 ms)
+[0;32m[ RUN      ] [mcreateProduct.EmptyProductButEmptyWOrd
+[0;32m[       OK ] [mcreateProduct.EmptyProductButEmptyWOrd (0 ms)
+[0;32m[ RUN      ] [mcreateProduct.LoopOnExistingState
+[0;32m[       OK ] [mcreateProduct.LoopOnExistingState (0 ms)
+[0;32m[----------] [m6 tests from createProduct (0 ms total)
+
+[0;32m[----------] [m6 tests from hasEmptyIntersectionWith
+[0;32m[ RUN      ] [mhasEmptyIntersectionWith.sameAutomate
+[0;32m[       OK ] [mhasEmptyIntersectionWith.sameAutomate (0 ms)
+[0;32m[ RUN      ] [mhasEmptyIntersectionWith.himself
+[0;32m[       OK ] [mhasEmptyIntersectionWith.himself (0 ms)
+[0;32m[ RUN      ] [mhasEmptyIntersectionWith.EmptyProduct
+[0;32m[       OK ] [mhasEmptyIntersectionWith.EmptyProduct (0 ms)
+[0;32m[ RUN      ] [mhasEmptyIntersectionWith.lhsLanguageEmpty
+[0;32m[       OK ] [mhasEmptyIntersectionWith.lhsLanguageEmpty (0 ms)
+[0;32m[ RUN      ] [mhasEmptyIntersectionWith.rhsLanguageEmpty
+[0;32m[       OK ] [mhasEmptyIntersectionWith.rhsLanguageEmpty (0 ms)
+[0;32m[ RUN      ] [mhasEmptyIntersectionWith.LoopOnExistingState
+[0;32m[       OK ] [mhasEmptyIntersectionWith.LoopOnExistingState (0 ms)
+[0;32m[----------] [m6 tests from hasEmptyIntersectionWith (0 ms total)
+
+[0;32m[----------] [m8 tests from readString
+[0;32m[ RUN      ] [mreadString.EmptyString
+[0;32m[       OK ] [mreadString.EmptyString (0 ms)
+[0;32m[ RUN      ] [mreadString.valid
+[0;32m[       OK ] [mreadString.valid (0 ms)
+[0;32m[ RUN      ] [mreadString.validLeast2Result
+[0;32m[       OK ] [mreadString.validLeast2Result (0 ms)
+[0;32m[ RUN      ] [mreadString.noExistingSymbol
+[0;32m[       OK ] [mreadString.noExistingSymbol (0 ms)
+[0;32m[ RUN      ] [mreadString.noInitialState
+[0;32m[       OK ] [mreadString.noInitialState (0 ms)
+[0;32m[ RUN      ] [mreadString.twoInitialStates
+[0;32m[       OK ] [mreadString.twoInitialStates (0 ms)
+[0;32m[ RUN      ] [mreadString.loop1
+[0;32m[       OK ] [mreadString.loop1 (0 ms)
+[0;32m[ RUN      ] [mreadString.loop2
+[0;32m[       OK ] [mreadString.loop2 (0 ms)
+[0;32m[----------] [m8 tests from readString (0 ms total)
+
+[0;32m[----------] [m9 tests from match
+[0;32m[ RUN      ] [mmatch.EmptyString
+[0;32m[       OK ] [mmatch.EmptyString (0 ms)
+[0;32m[ RUN      ] [mmatch.stringNotOnFinalState
+[0;32m[       OK ] [mmatch.stringNotOnFinalState (0 ms)
+[0;32m[ RUN      ] [mmatch.validSingleCharString
+[0;32m[       OK ] [mmatch.validSingleCharString (0 ms)
+[0;32m[ RUN      ] [mmatch.validLoopCharString
+[0;32m[       OK ] [mmatch.validLoopCharString (0 ms)
+[0;32m[ RUN      ] [mmatch.symbolNotIn
+[0;32m[       OK ] [mmatch.symbolNotIn (0 ms)
+[0;32m[ RUN      ] [mmatch.twoInitialStates
+[0;32m[       OK ] [mmatch.twoInitialStates (0 ms)
+[0;32m[ RUN      ] [mmatch.noInitialState
+[0;32m[       OK ] [mmatch.noInitialState (0 ms)
+[0;32m[ RUN      ] [mmatch.noFinalState
+[0;32m[       OK ] [mmatch.noFinalState (0 ms)
+[0;32m[ RUN      ] [mmatch.EmptyWord
+[0;32m[       OK ] [mmatch.EmptyWord (0 ms)
+[0;32m[----------] [m9 tests from match (0 ms total)
+
+[0;32m[----------] [m3 tests from createDeterministic
+[0;32m[ RUN      ] [mcreateDeterministic.twoInitialStates
+[0;32m[       OK ] [mcreateDeterministic.twoInitialStates (0 ms)
+[0;32m[ RUN      ] [mcreateDeterministic.zeroInitialState
+[0;32m[       OK ] [mcreateDeterministic.zeroInitialState (0 ms)
+[0;32m[ RUN      ] [mcreateDeterministic.alreadyDeterministic
+[0;32m[       OK ] [mcreateDeterministic.alreadyDeterministic (0 ms)
+[0;32m[----------] [m3 tests from createDeterministic (0 ms total)
+
+[0;32m[----------] [m4 tests from isIncludedIn
+[0;32m[ RUN      ] [misIncludedIn.sameAutomaton
+[0;32m[       OK ] [misIncludedIn.sameAutomaton (0 ms)
+[0;32m[ RUN      ] [misIncludedIn.complement
+[0;32m[       OK ] [misIncludedIn.complement (0 ms)
+[0;32m[ RUN      ] [misIncludedIn.emptyLanguage
+[0;32m[       OK ] [misIncludedIn.emptyLanguage (0 ms)
+[0;32m[ RUN      ] [misIncludedIn.loopA
+[0;32m[       OK ] [misIncludedIn.loopA (0 ms)
+[0;32m[----------] [m4 tests from isIncludedIn (0 ms total)
+
+[0;32m[----------] [m3 tests from createMinimalMoore
+[0;32m[ RUN      ] [mcreateMinimalMoore.AlreadyMinimal
+[0;32m[       OK ] [mcreateMinimalMoore.AlreadyMinimal (0 ms)
+[0;32m[ RUN      ] [mcreateMinimalMoore.noInitialState
+[0;32m[       OK ] [mcreateMinimalMoore.noInitialState (0 ms)
+[0;32m[ RUN      ] [mcreateMinimalMoore.td5ex17AlreadyCompletAndDeterministic
+[0;32m[       OK ] [mcreateMinimalMoore.td5ex17AlreadyCompletAndDeterministic (0 ms)
+[0;32m[----------] [m3 tests from createMinimalMoore (0 ms total)
+
+[0;32m[----------] [m3 tests from createMinimalBrzozowski
+[0;32m[ RUN      ] [mcreateMinimalBrzozowski.AlreadyMinimal
+[0;32m[       OK ] [mcreateMinimalBrzozowski.AlreadyMinimal (0 ms)
+[0;32m[ RUN      ] [mcreateMinimalBrzozowski.noInitialState
+[0;32m[       OK ] [mcreateMinimalBrzozowski.noInitialState (0 ms)
+[0;32m[ RUN      ] [mcreateMinimalBrzozowski.td5ex17AlreadyCompletAndDeterministic
+[0;32m[       OK ] [mcreateMinimalBrzozowski.td5ex17AlreadyCompletAndDeterministic (0 ms)
+[0;32m[----------] [m3 tests from createMinimalBrzozowski (0 ms total)
+
+[0;32m[----------] [m2 tests from prettyPrint
+[0;32m[ RUN      ] [mprettyPrint.Figure1Automatedexemple
+[0;32m[       OK ] [mprettyPrint.Figure1Automatedexemple (42 ms)
+[0;32m[ RUN      ] [mprettyPrint.Figure2Automatedexemple
+[0;32m[       OK ] [mprettyPrint.Figure2Automatedexemple (0 ms)
+[0;32m[----------] [m2 tests from prettyPrint (42 ms total)
+
+[0;32m[----------] [mGlobal test environment tear-down
+[0;32m[==========] [m125 tests from 30 test suites ran. (45 ms total)
+[0;32m[  PASSED  ] [m125 tests.
+[0;32m[==========] [mRunning 125 tests from 27 test suites.
+[0;32m[----------] [mGlobal test environment set-up.
+[0;32m[----------] [m1 test from AutomatonExampleTest
+[0;32m[ RUN      ] [mAutomatonExampleTest.Default
+[0;32m[       OK ] [mAutomatonExampleTest.Default (0 ms)
+[0;32m[----------] [m1 test from AutomatonExampleTest (0 ms total)
+
+[0;32m[----------] [m4 tests from IsValidTest
+[0;32m[ RUN      ] [mIsValidTest.Empty
+[0;32m[       OK ] [mIsValidTest.Empty (0 ms)
+[0;32m[ RUN      ] [mIsValidTest.OnlyOneSymbol
+[0;32m[       OK ] [mIsValidTest.OnlyOneSymbol (0 ms)
+[0;32m[ RUN      ] [mIsValidTest.OnlyOneState
+[0;32m[       OK ] [mIsValidTest.OnlyOneState (0 ms)
+[0;32m[ RUN      ] [mIsValidTest.OneSymbolAndOneState
+[0;32m[       OK ] [mIsValidTest.OneSymbolAndOneState (0 ms)
+[0;32m[----------] [m4 tests from IsValidTest (0 ms total)
+
+[0;32m[----------] [m6 tests from AddSymbolTest
+[0;32m[ RUN      ] [mAddSymbolTest.OneSymbol
+[0;32m[       OK ] [mAddSymbolTest.OneSymbol (0 ms)
+[0;32m[ RUN      ] [mAddSymbolTest.OneSymbolUpperCase
+[0;32m[       OK ] [mAddSymbolTest.OneSymbolUpperCase (0 ms)
+[0;32m[ RUN      ] [mAddSymbolTest.ManySymbols
+[0;32m[       OK ] [mAddSymbolTest.ManySymbols (0 ms)
+[0;32m[ RUN      ] [mAddSymbolTest.AlreadyPresent
+[0;32m[       OK ] [mAddSymbolTest.AlreadyPresent (0 ms)
+[0;32m[ RUN      ] [mAddSymbolTest.WrongSymbol
+[0;32m[       OK ] [mAddSymbolTest.WrongSymbol (0 ms)
+[0;32m[ RUN      ] [mAddSymbolTest.Epsilon
+[0;32m[       OK ] [mAddSymbolTest.Epsilon (0 ms)
+[0;32m[----------] [m6 tests from AddSymbolTest (0 ms total)
+
+[0;32m[----------] [m4 tests from RemoveSymbolTest
+[0;32m[ RUN      ] [mRemoveSymbolTest.OneSymbol
+[0;32m[       OK ] [mRemoveSymbolTest.OneSymbol (0 ms)
+[0;32m[ RUN      ] [mRemoveSymbolTest.OneSymbolUpperCase
+[0;32m[       OK ] [mRemoveSymbolTest.OneSymbolUpperCase (0 ms)
+[0;32m[ RUN      ] [mRemoveSymbolTest.ManySymbols
+[0;32m[       OK ] [mRemoveSymbolTest.ManySymbols (0 ms)
+[0;32m[ RUN      ] [mRemoveSymbolTest.NoPresent
+[0;32m[       OK ] [mRemoveSymbolTest.NoPresent (0 ms)
+[0;32m[----------] [m4 tests from RemoveSymbolTest (0 ms total)
+
+[0;32m[----------] [m4 tests from AddStateTest
+[0;32m[ RUN      ] [mAddStateTest.OneState
+[0;32m[       OK ] [mAddStateTest.OneState (0 ms)
+[0;32m[ RUN      ] [mAddStateTest.ManyStates
+[0;32m[       OK ] [mAddStateTest.ManyStates (0 ms)
+[0;32m[ RUN      ] [mAddStateTest.AlreadyPresent
+[0;32m[       OK ] [mAddStateTest.AlreadyPresent (0 ms)
+[0;32m[ RUN      ] [mAddStateTest.NegativeState
+[0;32m[       OK ] [mAddStateTest.NegativeState (0 ms)
+[0;32m[----------] [m4 tests from AddStateTest (0 ms total)
+
+[0;32m[----------] [m3 tests from RemoveStateTest
+[0;32m[ RUN      ] [mRemoveStateTest.OneState
+[0;32m[       OK ] [mRemoveStateTest.OneState (0 ms)
+[0;32m[ RUN      ] [mRemoveStateTest.ManyStates
+[0;32m[       OK ] [mRemoveStateTest.ManyStates (0 ms)
+[0;32m[ RUN      ] [mRemoveStateTest.NoPresent
+[0;32m[       OK ] [mRemoveStateTest.NoPresent (0 ms)
+[0;32m[----------] [m3 tests from RemoveStateTest (0 ms total)
+
+[0;32m[----------] [m3 tests from SetStateInitial
+[0;32m[ RUN      ] [mSetStateInitial.Initial
+[0;32m[       OK ] [mSetStateInitial.Initial (0 ms)
+[0;32m[ RUN      ] [mSetStateInitial.NoInitial
+[0;32m[       OK ] [mSetStateInitial.NoInitial (0 ms)
+[0;32m[ RUN      ] [mSetStateInitial.NoPresent
+[0;32m[       OK ] [mSetStateInitial.NoPresent (0 ms)
+[0;32m[----------] [m3 tests from SetStateInitial (0 ms total)
+
+[0;32m[----------] [m3 tests from SetStateFinal
+[0;32m[ RUN      ] [mSetStateFinal.Final
+[0;32m[       OK ] [mSetStateFinal.Final (0 ms)
+[0;32m[ RUN      ] [mSetStateFinal.NoFinal
+[0;32m[       OK ] [mSetStateFinal.NoFinal (0 ms)
+[0;32m[ RUN      ] [mSetStateFinal.NoPresent
+[0;32m[       OK ] [mSetStateFinal.NoPresent (0 ms)
+[0;32m[----------] [m3 tests from SetStateFinal (0 ms total)
+
+[0;32m[----------] [m7 tests from AddTransition
+[0;32m[ RUN      ] [mAddTransition.OneTransition
+[0;32m[       OK ] [mAddTransition.OneTransition (0 ms)
+[0;32m[ RUN      ] [mAddTransition.ManyTransitions
+[0;32m[       OK ] [mAddTransition.ManyTransitions (0 ms)
+[0;32m[ RUN      ] [mAddTransition.SameTransition
+[0;32m[       OK ] [mAddTransition.SameTransition (0 ms)
+[0;32m[ RUN      ] [mAddTransition.EpsilonTransition
+[0;32m[       OK ] [mAddTransition.EpsilonTransition (0 ms)
+[0;32m[ RUN      ] [mAddTransition.SymbolNoExist
+[0;32m[       OK ] [mAddTransition.SymbolNoExist (0 ms)
+[0;32m[ RUN      ] [mAddTransition.StateStartNoPresent
+[0;32m[       OK ] [mAddTransition.StateStartNoPresent (0 ms)
+[0;32m[ RUN      ] [mAddTransition.StateEndNoPresent
+[0;32m[       OK ] [mAddTransition.StateEndNoPresent (0 ms)
+[0;32m[----------] [m7 tests from AddTransition (0 ms total)
+
+[0;32m[----------] [m12 tests from RemoveTransition
+[0;32m[ RUN      ] [mRemoveTransition.OneTransition
+[0;32m[       OK ] [mRemoveTransition.OneTransition (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.ManyTransitions
+[0;32m[       OK ] [mRemoveTransition.ManyTransitions (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.Epsilon
+[0;32m[       OK ] [mRemoveTransition.Epsilon (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.SymbolNoExist
+[0;32m[       OK ] [mRemoveTransition.SymbolNoExist (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.StateStartNoPresent
+[0;32m[       OK ] [mRemoveTransition.StateStartNoPresent (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.StateEndNoPresent
+[0;32m[       OK ] [mRemoveTransition.StateEndNoPresent (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.OneBySymbol
+[0;32m[       OK ] [mRemoveTransition.OneBySymbol (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.OneByFirstState
+[0;32m[       OK ] [mRemoveTransition.OneByFirstState (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.OneBySecondState
+[0;32m[       OK ] [mRemoveTransition.OneBySecondState (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.MultiBySymbol
+[0;32m[       OK ] [mRemoveTransition.MultiBySymbol (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.MultiByFirstState
+[0;32m[       OK ] [mRemoveTransition.MultiByFirstState (0 ms)
+[0;32m[ RUN      ] [mRemoveTransition.MultiBySecondState
+[0;32m[       OK ] [mRemoveTransition.MultiBySecondState (0 ms)
+[0;32m[----------] [m12 tests from RemoveTransition (0 ms total)
+
+[0;32m[----------] [m2 tests from HasEpsilonTransition
+[0;32m[ RUN      ] [mHasEpsilonTransition.EpsilonTransition
+[0;32m[       OK ] [mHasEpsilonTransition.EpsilonTransition (0 ms)
+[0;32m[ RUN      ] [mHasEpsilonTransition.NoEpsilonTransition
+[0;32m[       OK ] [mHasEpsilonTransition.NoEpsilonTransition (0 ms)
+[0;32m[----------] [m2 tests from HasEpsilonTransition (0 ms total)
+
+[0;32m[----------] [m5 tests from IsDeterministic
+[0;32m[ RUN      ] [mIsDeterministic.NoStateInitial
+[0;32m[       OK ] [mIsDeterministic.NoStateInitial (0 ms)
+[0;32m[ RUN      ] [mIsDeterministic.TwoStateInitial
+[0;32m[       OK ] [mIsDeterministic.TwoStateInitial (0 ms)
+[0;32m[ RUN      ] [mIsDeterministic.NoTransition
+[0;32m[       OK ] [mIsDeterministic.NoTransition (0 ms)
+[0;32m[ RUN      ] [mIsDeterministic.Deterministic
+[0;32m[       OK ] [mIsDeterministic.Deterministic (0 ms)
+[0;32m[ RUN      ] [mIsDeterministic.NoDeterministic
+[0;32m[       OK ] [mIsDeterministic.NoDeterministic (0 ms)
+[0;32m[----------] [m5 tests from IsDeterministic (0 ms total)
+
+[0;32m[----------] [m3 tests from IsComplete
+[0;32m[ RUN      ] [mIsComplete.NoTransition
+[0;32m[       OK ] [mIsComplete.NoTransition (0 ms)
+[0;32m[ RUN      ] [mIsComplete.Complete
+[0;32m[       OK ] [mIsComplete.Complete (0 ms)
+[0;32m[ RUN      ] [mIsComplete.NoComplete
+[0;32m[       OK ] [mIsComplete.NoComplete (0 ms)
+[0;32m[----------] [m3 tests from IsComplete (0 ms total)
+
+[0;32m[----------] [m4 tests from CreateComplete
+[0;32m[ RUN      ] [mCreateComplete.VerifBinState
+[0;32m[       OK ] [mCreateComplete.VerifBinState (0 ms)
+[0;32m[ RUN      ] [mCreateComplete.CompleteExo9
+[0;32m[       OK ] [mCreateComplete.CompleteExo9 (0 ms)
+[0;32m[ RUN      ] [mCreateComplete.CompleteExo10
+[0;32m[       OK ] [mCreateComplete.CompleteExo10 (0 ms)
+[0;32m[ RUN      ] [mCreateComplete.AlreadyCompletExo11
+[0;32m[       OK ] [mCreateComplete.AlreadyCompletExo11 (0 ms)
+[0;32m[----------] [m4 tests from CreateComplete (0 ms total)
+
+[0;32m[----------] [m5 tests from CreateComplement
+[0;32m[ RUN      ] [mCreateComplement.NoTransition
+[0;32m[       OK ] [mCreateComplement.NoTransition (0 ms)
+[0;32m[ RUN      ] [mCreateComplement.CompleteNoDeterministic
+[0;32m[       OK ] [mCreateComplement.CompleteNoDeterministic (0 ms)
+[0;32m[ RUN      ] [mCreateComplement.NoCompleteNoDeterministic
+[0;32m[       OK ] [mCreateComplement.NoCompleteNoDeterministic (0 ms)
+[0;32m[ RUN      ] [mCreateComplement.Complement1
+[0;32m[       OK ] [mCreateComplement.Complement1 (0 ms)
+[0;32m[ RUN      ] [mCreateComplement.Complement2
+[0;32m[       OK ] [mCreateComplement.Complement2 (0 ms)
+[0;32m[----------] [m5 tests from CreateComplement (0 ms total)
+
+[0;32m[----------] [m6 tests from CreateMirror
+[0;32m[ RUN      ] [mCreateMirror.NoTransition
+[0;32m[       OK ] [mCreateMirror.NoTransition (0 ms)
+[0;32m[ RUN      ] [mCreateMirror.InverseStateInitial
+[0;32m[       OK ] [mCreateMirror.InverseStateInitial (0 ms)
+[0;32m[ RUN      ] [mCreateMirror.InverseStateFinal
+[0;32m[       OK ] [mCreateMirror.InverseStateFinal (0 ms)
+[0;32m[ RUN      ] [mCreateMirror.InverseStateInitialAndFinal
+[0;32m[       OK ] [mCreateMirror.InverseStateInitialAndFinal (0 ms)
+[0;32m[ RUN      ] [mCreateMirror.Mirror1
+[0;32m[       OK ] [mCreateMirror.Mirror1 (0 ms)
+[0;32m[ RUN      ] [mCreateMirror.Mirror2
+[0;32m[       OK ] [mCreateMirror.Mirror2 (0 ms)
+[0;32m[----------] [m6 tests from CreateMirror (0 ms total)
+
+[0;32m[----------] [m6 tests from IsLanguageEmpty
+[0;32m[ RUN      ] [mIsLanguageEmpty.NoTransition
+[0;32m[       OK ] [mIsLanguageEmpty.NoTransition (0 ms)
+[0;32m[ RUN      ] [mIsLanguageEmpty.NoStateInitial
+[0;32m[       OK ] [mIsLanguageEmpty.NoStateInitial (0 ms)
+[0;32m[ RUN      ] [mIsLanguageEmpty.NoStateFinal
+[0;32m[       OK ] [mIsLanguageEmpty.NoStateFinal (0 ms)
+[0;32m[ RUN      ] [mIsLanguageEmpty.StateInitialFinal
+[0;32m[       OK ] [mIsLanguageEmpty.StateInitialFinal (0 ms)
+[0;32m[ RUN      ] [mIsLanguageEmpty.simple
+[0;32m[       OK ] [mIsLanguageEmpty.simple (0 ms)
+[0;32m[ RUN      ] [mIsLanguageEmpty.NoSimple
+[0;32m[       OK ] [mIsLanguageEmpty.NoSimple (0 ms)
+[0;32m[----------] [m6 tests from IsLanguageEmpty (0 ms total)
+
+[0;32m[----------] [m3 tests from RemoveNonAccessibleStates
+[0;32m[ RUN      ] [mRemoveNonAccessibleStates.stateNopresentInTransitions
+[0;32m[       OK ] [mRemoveNonAccessibleStates.stateNopresentInTransitions (0 ms)
+[0;32m[ RUN      ] [mRemoveNonAccessibleStates.stateNoAccesibleFromInitialState
+[0;32m[       OK ] [mRemoveNonAccessibleStates.stateNoAccesibleFromInitialState (0 ms)
+[0;32m[ RUN      ] [mRemoveNonAccessibleStates.All
+[0;32m[       OK ] [mRemoveNonAccessibleStates.All (0 ms)
+[0;32m[----------] [m3 tests from RemoveNonAccessibleStates (0 ms total)
+
+[0;32m[----------] [m3 tests from RemoveNonCoAccessibleStates
+[0;32m[ RUN      ] [mRemoveNonCoAccessibleStates.stateNopresentInTransitions
+[0;32m[       OK ] [mRemoveNonCoAccessibleStates.stateNopresentInTransitions (0 ms)
+[0;32m[ RUN      ] [mRemoveNonCoAccessibleStates.stateNoAccesibleFromFinalState
+[0;32m[       OK ] [mRemoveNonCoAccessibleStates.stateNoAccesibleFromFinalState (0 ms)
+[0;32m[ RUN      ] [mRemoveNonCoAccessibleStates.All
+[0;32m[       OK ] [mRemoveNonCoAccessibleStates.All (0 ms)
+[0;32m[----------] [m3 tests from RemoveNonCoAccessibleStates (0 ms total)
+
+[0;32m[----------] [m4 tests from CreateProduct
+[0;32m[ RUN      ] [mCreateProduct.Deterministic
+[0;32m[       OK ] [mCreateProduct.Deterministic (0 ms)
+[0;32m[ RUN      ] [mCreateProduct.NoDeterministic
+[0;32m[       OK ] [mCreateProduct.NoDeterministic (0 ms)
+[0;32m[ RUN      ] [mCreateProduct.rhsLanguageEmpty
+[0;32m[       OK ] [mCreateProduct.rhsLanguageEmpty (0 ms)
+[0;32m[ RUN      ] [mCreateProduct.lhsLanguageEmpty
+[0;32m[       OK ] [mCreateProduct.lhsLanguageEmpty (0 ms)
+[0;32m[----------] [m4 tests from CreateProduct (0 ms total)
+
+[0;32m[----------] [m3 tests from HasEmptyIntersectionWith
+[0;32m[ RUN      ] [mHasEmptyIntersectionWith.NoEmpty
+[0;32m[       OK ] [mHasEmptyIntersectionWith.NoEmpty (0 ms)
+[0;32m[ RUN      ] [mHasEmptyIntersectionWith.Empty
+[0;32m[       OK ] [mHasEmptyIntersectionWith.Empty (0 ms)
+[0;32m[ RUN      ] [mHasEmptyIntersectionWith.SameAutomate
+[0;32m[       OK ] [mHasEmptyIntersectionWith.SameAutomate (0 ms)
+[0;32m[----------] [m3 tests from HasEmptyIntersectionWith (0 ms total)
+
+[0;32m[----------] [m5 tests from CreateDeterministic
+[0;32m[ RUN      ] [mCreateDeterministic.Normal
+[0;32m[       OK ] [mCreateDeterministic.Normal (0 ms)
+[0;32m[ RUN      ] [mCreateDeterministic.TwoStatesInitial
+[0;32m[       OK ] [mCreateDeterministic.TwoStatesInitial (0 ms)
+[0;32m[ RUN      ] [mCreateDeterministic.NoInitialState
+[0;32m[       OK ] [mCreateDeterministic.NoInitialState (0 ms)
+[0;32m[ RUN      ] [mCreateDeterministic.NoFinalState
+[0;32m[       OK ] [mCreateDeterministic.NoFinalState (0 ms)
+[0;32m[ RUN      ] [mCreateDeterministic.AlreadyDeterministic
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:1704: Failure
+Value of: fad.isLanguageEmpty()
+  Actual: true
+Expected: false
+[0;31m[  FAILED  ] [mCreateDeterministic.AlreadyDeterministic (0 ms)
+[0;32m[----------] [m5 tests from CreateDeterministic (0 ms total)
+
+[0;32m[----------] [m7 tests from ReadString
+[0;32m[ RUN      ] [mReadString.EmptyWord
+[0;32m[       OK ] [mReadString.EmptyWord (0 ms)
+[0;32m[ RUN      ] [mReadString.WordB
+[0;32m[       OK ] [mReadString.WordB (0 ms)
+[0;32m[ RUN      ] [mReadString.WordA
+[0;32m[       OK ] [mReadString.WordA (0 ms)
+[0;32m[ RUN      ] [mReadString.WordALoop
+[0;32m[       OK ] [mReadString.WordALoop (0 ms)
+[0;32m[ RUN      ] [mReadString.NoSymbolInalphabet
+[0;32m[       OK ] [mReadString.NoSymbolInalphabet (0 ms)
+[0;32m[ RUN      ] [mReadString.NoDeterministic
+[0;32m[       OK ] [mReadString.NoDeterministic (0 ms)
+[0;32m[ RUN      ] [mReadString.Looooooooooooop
+[0;32m[       OK ] [mReadString.Looooooooooooop (0 ms)
+[0;32m[----------] [m7 tests from ReadString (0 ms total)
+
+[0;32m[----------] [m4 tests from Match
+[0;32m[ RUN      ] [mMatch.EmptyWord
+[0;32m[       OK ] [mMatch.EmptyWord (0 ms)
+[0;32m[ RUN      ] [mMatch.WordA
+[0;32m[       OK ] [mMatch.WordA (0 ms)
+[0;32m[ RUN      ] [mMatch.Loop
+[0;32m[       OK ] [mMatch.Loop (0 ms)
+[0;32m[ RUN      ] [mMatch.NoDeterministic
+[0;32m[       OK ] [mMatch.NoDeterministic (0 ms)
+[0;32m[----------] [m4 tests from Match (0 ms total)
+
+[0;32m[----------] [m6 tests from IsIncludedIn
+[0;32m[ RUN      ] [mIsIncludedIn.SameAutomate
+[0;32m[       OK ] [mIsIncludedIn.SameAutomate (0 ms)
+[0;32m[ RUN      ] [mIsIncludedIn.Complement
+[0;32m[       OK ] [mIsIncludedIn.Complement (0 ms)
+[0;32m[ RUN      ] [mIsIncludedIn.True
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:1912: Failure
+Value of: fa1.isIncludedIn(fa2)
+  Actual: false
+Expected: true
+[0;31m[  FAILED  ] [mIsIncludedIn.True (0 ms)
+[0;32m[ RUN      ] [mIsIncludedIn.False
+[0;32m[       OK ] [mIsIncludedIn.False (0 ms)
+[0;32m[ RUN      ] [mIsIncludedIn.TwoEmpty
+[0;32m[       OK ] [mIsIncludedIn.TwoEmpty (0 ms)
+[0;32m[ RUN      ] [mIsIncludedIn.NoSameAlphabet
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:1997: Failure
+Value of: fa1.isIncludedIn(fa2)
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:1998: Failure
+Value of: fa2.isIncludedIn(fa1)
+  Actual: true
+Expected: false
+[0;31m[  FAILED  ] [mIsIncludedIn.NoSameAlphabet (0 ms)
+[0;32m[----------] [m6 tests from IsIncludedIn (0 ms total)
+
+[0;32m[----------] [m6 tests from CreateMinimalMoore
+[0;32m[ RUN      ] [mCreateMinimalMoore.NoMinima1
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2018: Failure
+Value of: fam.isDeterministic()
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2025: Failure
+Expected equality of these values:
+  8u
+    Which is: 8
+  fam.countStates()
+    Which is: 5
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2030: Failure
+Value of: fam.match("aa")
+  Actual: false
+Expected: true
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoMinima1 (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalMoore.NoMinimal2
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2051: Failure
+Value of: fam.isLanguageEmpty()
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2052: Failure
+Value of: fa.hasEmptyIntersectionWith(fam)
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2053: Failure
+Value of: fam.hasEmptyIntersectionWith(fa)
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2054: Failure
+Value of: fa.isIncludedIn(fam)
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2057: Failure
+Expected equality of these values:
+  5u
+    Which is: 5
+  fam.countStates()
+    Which is: 3
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2060: Failure
+Value of: fam.match("aa")
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2061: Failure
+Value of: fam.match("bb")
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2062: Failure
+Value of: fam.match("abab")
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2063: Failure
+Value of: fam.match("baba")
+  Actual: false
+Expected: true
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoMinimal2 (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalMoore.AlreadyMinimal
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2083: Failure
+Value of: fam.isLanguageEmpty()
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2084: Failure
+Value of: fa.hasEmptyIntersectionWith(fam)
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2085: Failure
+Value of: fam.hasEmptyIntersectionWith(fa)
+  Actual: true
+Expected: false
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2086: Failure
+Value of: fa.isIncludedIn(fam)
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2089: Failure
+Expected equality of these values:
+  2u
+    Which is: 2
+  fam.countStates()
+    Which is: 3
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2092: Failure
+Value of: fam.match("aa")
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2093: Failure
+Value of: fam.match("bba")
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2094: Failure
+Value of: fam.match("abba")
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2095: Failure
+Value of: fam.match("baba")
+  Actual: false
+Expected: true
+[0;31m[  FAILED  ] [mCreateMinimalMoore.AlreadyMinimal (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalMoore.TwoBinState
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2146: Failure
+Expected equality of these values:
+  3u
+    Which is: 3
+  fam.countStates()
+    Which is: 4
+[0;31m[  FAILED  ] [mCreateMinimalMoore.TwoBinState (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalMoore.NoInitialState
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2180: Failure
+Expected equality of these values:
+  1u
+    Which is: 1
+  fam.countStates()
+    Which is: 2
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoInitialState (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalMoore.NoAccessibleState
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2215: Failure
+Value of: fam.isDeterministic()
+  Actual: false
+Expected: true
+/home/xadel/Folder/Cour/L3/TL/automate/testfa.cc:2223: Failure
+Expected equality of these values:
+  2u
+    Which is: 2
+  fam.countStates()
+    Which is: 3
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoAccessibleState (0 ms)
+[0;32m[----------] [m6 tests from CreateMinimalMoore (0 ms total)
+
+[0;32m[----------] [m6 tests from CreateMinimalBrzozowski
+[0;32m[ RUN      ] [mCreateMinimalBrzozowski.NoMinimal1
+[0;32m[       OK ] [mCreateMinimalBrzozowski.NoMinimal1 (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalBrzozowski.NoMinimal2
+[0;32m[       OK ] [mCreateMinimalBrzozowski.NoMinimal2 (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalBrzozowski.AlreadyMinimal
+[0;32m[       OK ] [mCreateMinimalBrzozowski.AlreadyMinimal (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalBrzozowski.AlreadyBinState
+[0;32m[       OK ] [mCreateMinimalBrzozowski.AlreadyBinState (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalBrzozowski.NoInitialState
+[0;32m[       OK ] [mCreateMinimalBrzozowski.NoInitialState (0 ms)
+[0;32m[ RUN      ] [mCreateMinimalBrzozowski.NoAccessibleState
+[0;32m[       OK ] [mCreateMinimalBrzozowski.NoAccessibleState (0 ms)
+[0;32m[----------] [m6 tests from CreateMinimalBrzozowski (0 ms total)
+
+[0;32m[----------] [mGlobal test environment tear-down
+[0;32m[==========] [m125 tests from 27 test suites ran. (4 ms total)
+[0;32m[  PASSED  ] [m116 tests.
+[0;31m[  FAILED  ] [m9 tests, listed below:
+[0;31m[  FAILED  ] [mCreateDeterministic.AlreadyDeterministic
+[0;31m[  FAILED  ] [mIsIncludedIn.True
+[0;31m[  FAILED  ] [mIsIncludedIn.NoSameAlphabet
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoMinima1
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoMinimal2
+[0;31m[  FAILED  ] [mCreateMinimalMoore.AlreadyMinimal
+[0;31m[  FAILED  ] [mCreateMinimalMoore.TwoBinState
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoInitialState
+[0;31m[  FAILED  ] [mCreateMinimalMoore.NoAccessibleState
+
+ 9 FAILED TESTS

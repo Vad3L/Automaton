@@ -21,13 +21,13 @@ void createAutomaton(fa::Automaton& mamiRobot,int nbState, std::vector<char> dic
 
 
 
-
+/*
 void testDotPrint(const fa::Automaton& mamiRobot,std::string file){
   std::string const fichier("./img/"+file+".dot");  //On ouvre le fichier
   std::ofstream monFlux(fichier.c_str());
   //dot -Tpng figure2.dot -o figure2.png
   mamiRobot.dotPrint(monFlux);
-}
+}*/
 
 TEST(createComplete, test) {
   fa::Automaton fa;
@@ -112,7 +112,7 @@ TEST(removeSymbol, OneSymbol) {
   fa::Automaton fa;
   EXPECT_TRUE(fa.addSymbol('a'));
   EXPECT_TRUE(fa.removeSymbol('a'));
-  EXPECT_EQ(0,(int)fa.countSymbols());
+  EXPECT_EQ(0u,fa.countSymbols());
 }
 
 TEST(removeSymbol, ManySymbols) {
@@ -131,7 +131,7 @@ TEST(removeSymbol, InvalidSymbol) {
   fa::Automaton fa;
   EXPECT_TRUE(fa.addSymbol('b'));
   EXPECT_FALSE(fa.removeSymbol('a'));
-  EXPECT_EQ(1,(int)fa.countSymbols());
+  EXPECT_EQ(1u,fa.countSymbols());
 }
 
 /*
@@ -194,7 +194,7 @@ TEST(removeState, OneSymbol) {
   fa::Automaton fa;
   EXPECT_TRUE(fa.addState(1));
   EXPECT_TRUE(fa.removeState(1));
-  EXPECT_EQ(0,(int)fa.countStates());
+  EXPECT_EQ(0u,fa.countStates());
 }
 
 TEST(removeState, ManySymbols) {
@@ -211,7 +211,7 @@ TEST(removeState, InvalidSymbol) {
   fa::Automaton fa;
   EXPECT_TRUE(fa.addState(1));
   EXPECT_FALSE(fa.removeState(2));
-  EXPECT_EQ(1,(int)fa.countStates());
+  EXPECT_EQ(1u,fa.countStates());
 }
 
 /*
@@ -340,7 +340,7 @@ TEST(addTransition, AlreadyExist) {
   EXPECT_TRUE(fa.addTransition(0,'a',1));
   EXPECT_FALSE(fa.addTransition(0,'a',1));
   EXPECT_TRUE(fa.hasTransition(0,'a',1));
-  EXPECT_EQ(1,(int)fa.countTransitions());
+  EXPECT_EQ(1u,fa.countTransitions());
 }
 
 TEST(addTransition, SymbolNotExist) {
@@ -718,7 +718,7 @@ TEST(createComplement, noCompletNoDeterministic){
 	EXPECT_TRUE(fa.addTransition(2,'a',2));
 	EXPECT_TRUE(fa.addTransition(4,'a',2));
 
-	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_EQ(3u,fa.countSymbols());
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.isComplete());
 
@@ -728,7 +728,7 @@ TEST(createComplement, noCompletNoDeterministic){
 	fa = fa.createComplement(fa);
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_EQ(3u,fa.countSymbols());
 	EXPECT_TRUE(fa.isComplete());
 	
 	EXPECT_TRUE(fa.match("c"));
@@ -798,7 +798,7 @@ TEST(createComplement,Complement2Times){
 	EXPECT_TRUE(fa.addTransition(2,'a',2));
 	EXPECT_TRUE(fa.addTransition(4,'a',2));
 
-	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_EQ(3u,fa.countSymbols());
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.isComplete());
 
@@ -808,7 +808,7 @@ TEST(createComplement,Complement2Times){
 	fa = fa.createComplement(fa);
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_EQ(3u,fa.countSymbols());
 	EXPECT_TRUE(fa.isComplete());
 	
 	EXPECT_TRUE(fa.match("c"));
@@ -817,7 +817,7 @@ TEST(createComplement,Complement2Times){
 	fa = fa.createComplement(fa);
 		
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(3,fa.countSymbols());
+	EXPECT_EQ(3u,fa.countSymbols());
 	EXPECT_TRUE(fa.isComplete());
 	EXPECT_FALSE(fa.match("c"));
 	EXPECT_FALSE(fa.match("bac"));
@@ -845,8 +845,8 @@ TEST(createMirror, valid) {
 	
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(5,fa.countTransitions());
-	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_EQ(5u,fa.countTransitions());
+	EXPECT_EQ(2u,fa.countSymbols());
 	EXPECT_FALSE(fa.match("bab"));
 	EXPECT_TRUE(fa.match("aba"));
 	EXPECT_TRUE(fa.match("a"));
@@ -860,8 +860,8 @@ TEST(createMirror, valid) {
 	EXPECT_TRUE(fa.match("aba"));
 	EXPECT_TRUE(fa.match("ba"));
 	EXPECT_TRUE(fa.match("a"));
-	EXPECT_EQ(5,fa.countTransitions());
-	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_EQ(5u,fa.countTransitions());
+	EXPECT_EQ(2u,fa.countSymbols());
 
 }
 
@@ -874,15 +874,15 @@ TEST(createMirror, NoTransition){
 	fa.setStateFinal(2);
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(0,fa.countTransitions());
-	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_EQ(0u,fa.countTransitions());
+	EXPECT_EQ(2u,fa.countSymbols());
 	EXPECT_TRUE(fa.isLanguageEmpty());
 
 	fa = fa.createMirror(fa);
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(0,fa.countTransitions());
-	EXPECT_EQ(2,fa.countSymbols());
+	EXPECT_EQ(0u,fa.countTransitions());
+	EXPECT_EQ(2u,fa.countSymbols());
 	EXPECT_TRUE(fa.isLanguageEmpty());
 }
 
@@ -898,17 +898,17 @@ TEST(createMirror, stateInitioFinal){
 	
 	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(2,fa.countSymbols());
-	EXPECT_EQ(1,fa.countStates());
-	EXPECT_EQ(1,fa.countTransitions());
+	EXPECT_EQ(2u,fa.countSymbols());
+	EXPECT_EQ(1u,fa.countStates());
+	EXPECT_EQ(1u,fa.countTransitions());
 	
 	fa = fa.createMirror(fa);
 	
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(2,fa.countSymbols());
-	EXPECT_EQ(1,fa.countStates());
-	EXPECT_EQ(1,fa.countTransitions());
+	EXPECT_EQ(2u,fa.countSymbols());
+	EXPECT_EQ(1u,fa.countStates());
+	EXPECT_EQ(1u,fa.countTransitions());
 	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	
 }
@@ -1021,6 +1021,34 @@ TEST(isLanguageEmpty, EmptyWord){
 
 }
 
+TEST(isLanguageEmpty,Emmanuel){
+	fa::Automaton fa;
+	
+	EXPECT_TRUE(fa.addState(0));
+	EXPECT_TRUE(fa.addState(1));
+	EXPECT_TRUE(fa.addState(2));
+	EXPECT_TRUE(fa.addState(3));
+	EXPECT_TRUE(fa.addState(4));
+	EXPECT_TRUE(fa.addState(5));
+
+	EXPECT_TRUE(fa.addSymbol('L'));
+	EXPECT_TRUE(fa.addSymbol('R'));
+	EXPECT_TRUE(fa.addSymbol('E'));
+	EXPECT_TRUE(fa.addSymbol('M'));
+	
+	fa.setStateInitial(0);
+	fa.setStateFinal(4);
+
+	EXPECT_TRUE(fa.addTransition(0,'L',1));
+	EXPECT_TRUE(fa.addTransition(1,'L',3));
+	EXPECT_TRUE(fa.addTransition(1,'L',4));
+	EXPECT_TRUE(fa.addTransition(3,'L',4));
+	EXPECT_TRUE(fa.addTransition(0,'L',2));
+
+	EXPECT_FALSE(fa.isLanguageEmpty());
+	fa.prettyPrint(std::cout);
+}
+
 
 /*
  * removeNonAccessibleStates
@@ -1032,11 +1060,10 @@ TEST(removeNonAccessibleStates,NoInitialState){
 	
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isLanguageEmpty());
-	EXPECT_EQ(10,fa.countStates());
+	EXPECT_EQ(10u,fa.countStates());
 
 	fa.removeNonAccessibleStates();
-	std::cout << "la\n";
-	EXPECT_EQ(1,fa.countStates());
+	EXPECT_EQ(1u,fa.countStates());
 	EXPECT_TRUE(fa.isLanguageEmpty());
 	EXPECT_TRUE(fa.isValid());
 }
@@ -1052,12 +1079,12 @@ TEST(removeNonAccessibleStates, noNonAccessiblesStates){
 	EXPECT_TRUE(fa.addTransition(2,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(4u,fa.countStates());
 
 	fa.removeNonAccessibleStates();
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(4u,fa.countStates());
 
 
 }
@@ -1074,15 +1101,15 @@ TEST(removeNonAccessibleStates, lastNoAccessible){
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countStates());
-	EXPECT_EQ(3,fa.countTransitions());
+	EXPECT_EQ(4u,fa.countStates());
+	EXPECT_EQ(3u,fa.countTransitions());
 
 	fa.removeNonAccessibleStates();
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.hasState(3));
-	EXPECT_EQ(3,fa.countStates());
-	EXPECT_EQ(2,fa.countTransitions());
+	EXPECT_EQ(3u,fa.countStates());
+	EXPECT_EQ(2u,fa.countTransitions());
 
 
 }
@@ -1100,15 +1127,15 @@ TEST(removeNonAccessibleStates, chained){
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countStates());
-	EXPECT_EQ(4,fa.countTransitions());
+	EXPECT_EQ(4u,fa.countStates());
+	EXPECT_EQ(4u,fa.countTransitions());
 
 	fa.removeNonAccessibleStates();
 
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(1,fa.countStates());
-	EXPECT_EQ(0,fa.countTransitions());
+	EXPECT_EQ(1u,fa.countStates());
+	EXPECT_EQ(0u,fa.countTransitions());
 
 }
 
@@ -1128,14 +1155,14 @@ TEST(removeNonCoAccessibleStates,noFinalState){
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countTransitions());
-	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(4u,fa.countTransitions());
+	EXPECT_EQ(4u,fa.countStates());
 
 	fa.removeNonCoAccessibleStates();
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(0,fa.countTransitions());
-	EXPECT_EQ(1,fa.countStates());
+	EXPECT_EQ(0u,fa.countTransitions());
+	EXPECT_EQ(1u,fa.countStates());
 }
 
 
@@ -1152,14 +1179,14 @@ TEST(removeNonCoAccessibleStates,noNonCoAccessiblesState){
 	EXPECT_TRUE(fa.addTransition(3,'a',3));
 
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countTransitions());
-	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(4u,fa.countTransitions());
+	EXPECT_EQ(4u,fa.countStates());
 
 	fa.removeNonCoAccessibleStates();
 	
 	EXPECT_TRUE(fa.isValid());
-	EXPECT_EQ(4,fa.countTransitions());
-	EXPECT_EQ(4,fa.countStates());
+	EXPECT_EQ(4u,fa.countTransitions());
+	EXPECT_EQ(4u,fa.countStates());
 }
 
 TEST(removeNonCoAccessibleStates,firstStateNoCoAccessible){
@@ -1182,7 +1209,7 @@ TEST(removeNonCoAccessibleStates,firstStateNoCoAccessible){
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_FALSE(fa.hasState(0));
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3u,fa.countStates());
 }
 
 
@@ -2061,7 +2088,7 @@ TEST(createMinimalMoore,AlreadyMinimal){
 	EXPECT_TRUE(fa.addTransition(2,'a',0));
 	EXPECT_TRUE(fa.addTransition(2,'b',2));
 
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3u,fa.countStates());
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isDeterministic());
@@ -2069,7 +2096,7 @@ TEST(createMinimalMoore,AlreadyMinimal){
 
 	fa = fa.createMinimalMoore(fa);
 	
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3u,fa.countStates());
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isDeterministic());
 	EXPECT_TRUE(fa.isComplete());
@@ -2126,14 +2153,14 @@ TEST(createMinimalMoore,td5ex17AlreadyCompletAndDeterministic){
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isComplete());
 	EXPECT_TRUE(fa.isDeterministic());
-	EXPECT_EQ(6,fa.countStates());
+	EXPECT_EQ(6u,fa.countStates());
 
 	fa::Automaton faa = fa.createMinimalMoore(fa);
 
 	EXPECT_TRUE(faa.isValid());
 	EXPECT_TRUE(faa.isComplete());
 	EXPECT_TRUE(faa.isDeterministic());
-	EXPECT_EQ(3,faa.countStates());
+	EXPECT_EQ(3u,faa.countStates());
 
 	EXPECT_TRUE(fa.isIncludedIn(faa));
 	EXPECT_TRUE(faa.isIncludedIn(fa));
@@ -2159,7 +2186,7 @@ TEST(createMinimalBrzozowski,AlreadyMinimal){
 	EXPECT_TRUE(fa.addTransition(2,'a',0));
 	EXPECT_TRUE(fa.addTransition(2,'b',2));
 
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3u,fa.countStates());
 
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isDeterministic());
@@ -2167,7 +2194,7 @@ TEST(createMinimalBrzozowski,AlreadyMinimal){
 
 	fa = fa.createMinimalBrzozowski(fa);
 	
-	EXPECT_EQ(3,fa.countStates());
+	EXPECT_EQ(3u,fa.countStates());
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isDeterministic());
 	EXPECT_TRUE(fa.isComplete());
@@ -2224,14 +2251,14 @@ TEST(createMinimalBrzozowski,td5ex17AlreadyCompletAndDeterministic){
 	EXPECT_TRUE(fa.isValid());
 	EXPECT_TRUE(fa.isComplete());
 	EXPECT_TRUE(fa.isDeterministic());
-	EXPECT_EQ(6,fa.countStates());
+	EXPECT_EQ(6u,fa.countStates());
 
 	fa::Automaton faa = fa.createMinimalBrzozowski(fa);
 
 	EXPECT_TRUE(faa.isValid());
 	EXPECT_TRUE(faa.isComplete());
 	EXPECT_TRUE(faa.isDeterministic());
-	EXPECT_EQ(3,faa.countStates());
+	EXPECT_EQ(3u,faa.countStates());
 
 	EXPECT_TRUE(fa.isIncludedIn(faa));
 	EXPECT_TRUE(faa.isIncludedIn(fa));
@@ -2272,7 +2299,7 @@ TEST(prettyPrint, Figure1Automatedexemple) {
   std::ofstream monFlux(fichier.c_str());
 
 
-  fa.dotPrint(monFlux);
+  //fa.dotPrint(monFlux);
 }
 
 TEST(prettyPrint, Figure2Automatedexemple) {
@@ -2307,7 +2334,7 @@ TEST(prettyPrint, Figure2Automatedexemple) {
   std::ofstream monFlux(fichier.c_str());
 
   //dot -Tpng figure2.dot -o figure2.png
-  fa.dotPrint(monFlux);
+  //fa.dotPrint(monFlux);
 }
 
 
