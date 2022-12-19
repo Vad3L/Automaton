@@ -15,15 +15,15 @@ namespace fa {
   }
 
   bool Automaton::addSymbol(char symbol){
-    if(!std::isgraph(symbol)){return false;}
-    return alphabet.insert(symbol).second;
+	  return (!std::isgraph(symbol)) ? false: alphabet.insert(symbol).second;
   }
 
   bool Automaton::removeSymbol(char symbol){
     if(alphabet.erase(symbol) != 1){
       return false;
     }
-    for (auto it = transitions.begin(); it != transitions.end();){
+	// remove all transition with this symbol
+	for (auto it = transitions.begin(); it != transitions.end();){
       if (it->first.second == symbol){
         it = transitions.erase(it);
 	  }else{
@@ -43,8 +43,7 @@ namespace fa {
   }
 
   bool Automaton::addState(int state){
-    if(state<0){return false;}
-    return states.insert({state,std::make_pair(false,false)}).second;
+	return (state<0) ? false : states.insert({state,std::make_pair(false,false)}).second;
   }
 
   bool Automaton::removeState(int state){
@@ -55,7 +54,7 @@ namespace fa {
 	for(auto a : alphabet){
 		transitions.erase({state,a});
 	}
-    
+    // remove all transition who have this state
 	std::set<std::pair<int,char>> rem ;
 	for(auto f : transitions){
 		for(auto a : f.second){
@@ -101,19 +100,10 @@ namespace fa {
 
 
   bool Automaton::addTransition(int from, char alpha, int to){
-    if(!hasState(from) || !hasState(to)){
+	  // check all specifical case
+    if(!hasState(from) || !hasState(to) || hasTransition(from,alpha,to) || (!hasSymbol(alpha) && fa::Epsilon != alpha)){
       return false;
     }
-
-    if(hasTransition(from,alpha,to)){
-      return false;
-    }
-
-
-    if(!hasSymbol(alpha) && fa::Epsilon != alpha){
-      return false;
-    }
-
     auto result = transitions.find({from,alpha});
 
     if(result == transitions.end()){
@@ -164,81 +154,58 @@ namespace fa {
   }
 
   void Automaton::prettyPrint(std::ostream& os) const{
-    std::vector<int> initState;
-    std::vector<int> finalState;
-    std::vector<std::vector<int>> tabState;
-
-
-    for (std::pair<int, std::pair<bool,bool>> i : states) {
-      if (isStateInitial(i.first)){
-        initState.push_back(i.first);
-      }
-      if (isStateFinal(i.first)){
-        finalState.push_back(i.first);
-      }
-
-    }
-
+    std::set<int> initState = getInitialState();
+    std::set<int> finalState = getFinalState();
+	
+	// print initial state
     os << "Initial states:\n\t";
     for(int i : initState){
       os << i <<' ';
     } 
-    os << std::endl;
-
-    os << "Final states:\n\t"; 
+	// print final state
+    os << "\nFinal states:\n\t"; 
     for(int i : finalState){
       os << i <<' ';
     } 
-    os << std::endl;
-   
-    os << "Transitions"<< std::endl;
-    int previous = -1 ;
+	// print transitions
+    os << "\nTransitions\n";
+    int firste = -1 ;
     for (auto i = transitions.begin(); i != transitions.end(); i++) {
-      if(i->first.first != previous){
+      if(i->first.first != firste){
         os << "\tFor state " << i->first.first << ":\n";
       }
       
       
       os << "\t\tFor letter " <<(i->first.second == fa::Epsilon ? '~': i->first.second) << ": ";
-      for (size_t j = 0; j < i->second.size(); j++) {
-      
-        os << i->second[j] << " ";
-        
+      for (size_t x = 0; x < i->second.size(); x++) {
+        os << i->second[x] << " ";
       }
       os << std::endl;
-      previous = i->first.first;
+      firste = i->first.first;
     }
   }
 
   void Automaton::dotPrint(std::ostream& os) const {
-    os << "digraph Automaton {" << std::endl;
-    os << "\t rankdir=LR" << std::endl;
+    os << "digraph Automate {\n\t rankdir=LR\n";
     for (auto i : states) {
         if (isStateInitial(i.first) && isStateFinal(i.first)) {
-            os << "\tn" << i.first << "[shape=none label=\"\" height=0 width=0 ]"<<std::endl;
-            os << "\tn" << i.first << "->" << i.first << std::endl;
-            os << "\t" << i.first << "[shape=doublecircle]" << std::endl;
+            os << "\tn" << i.first << "[shape=none label=\"\" height=0 width=0 ]\n\tn" << i.first << "->" << i.first << "\n\t" << i.first << "[shape=doublecircle]\n";
         } else if (isStateInitial(i.first)) {
-            os << "\tn" << i.first << "[shape=none label=\"\" height=0 width=0 ]"<<std::endl;
-            os << "\tn" << i.first << "->" << i.first << std::endl;
-            os << "\t" << i.first << "[shape=circle]" << std::endl;
+            os << "\tn" << i.first << "[shape=none label=\"\" height=0 width=0 ]\n\tn" << i.first << "->" << i.first << "\n\t" << i.first << "[shape=circle]\n";
         } else if (isStateFinal(i.first)) {
-            os << "\t" << i.first;
-            os << "[shape=doublecircle]" << std::endl;
+            os << "\t" << i.first << "[shape=doublecircle]\n";
         }
     }
-    os << "\t" << "node [shape = circle]"<<std::endl;
+    os << "\tnode [shape = circle]\n";
     for (auto i : states){
       os << "\t" << i.first << std::endl ;
     }
     for (auto it = transitions.begin(); it != transitions.end(); it++) {
       for (size_t j = 0; j < it->second.size(); j++) {
         os << "\t" << it->first.first << " -> " << it->second[j] << " [label=\"" << (it->first.second == fa::Epsilon ? '~': it->first.second) << "\"]" << std::endl;
-      }
-      
+      } 
     }
-    
-    os << "}" << std::endl;
+    os << "}\n";
   }
 
   bool Automaton::hasEpsilonTransition () const {
@@ -251,12 +218,7 @@ namespace fa {
   }
 
   bool Automaton::isDeterministic() const{
-    int nbEtatInit = 0 ;
-    for (auto i : states) {
-      if(i.second.first){
-        nbEtatInit++;
-      }
-    }
+    int nbEtatInit = (int)getInitialState().size() ;
     
     if(nbEtatInit != 1){return false;}
 
@@ -298,7 +260,7 @@ namespace fa {
 		
 		std::set<int> visited;
 		for(int lo : si){
-			DepthFirstSearch(visited,lo);
+			DepthFirstSearch(false,visited,lo);
 		}
 		std::set<int> notVisited;
 		std::set_difference(begin(r),end(r),begin(visited),end(visited),inserter(notVisited,end(notVisited)));
@@ -310,45 +272,40 @@ namespace fa {
 	}
 
 	void Automaton::removeNonCoAccessibleStates(){
+		// mirror removeNonAccessibleStates and mirror remove all NonCoAccessiblesState
 		*this=createMirror(*this);
 		removeNonAccessibleStates();
 		*this=createMirror(*this);
 	}
 	
-	void Automaton::DepthFirstSearch(std::set<int>& v,int s )const{
+	bool Automaton::DepthFirstSearch(bool emptyChoice,std::set<int>& v,int s )const{
 		v.insert(s);
+		bool var = true;
 		for( auto i : transitions){
 			if(i.first.first == s){
 				for(int x : i.second){
-					if(v.find(x) == v.end()){
-						DepthFirstSearch(v,x);
+					if(emptyChoice){
+						if(isStateFinal(x)){
+							return false;
+						}
+						if(var && v.find(x) == v.end()){
+						
+							var = DepthFirstSearch(true,v,x);
+						}
+
+					}else{
+						if(v.find(x) == v.end()){
+							DepthFirstSearch(false,v,x);
+						}
 					}
 				}
 			}
 		}
+
+		return var;
 	}
 
 	
-
-	bool Automaton::DepthFirstSearch_empty(std::set<int>& v,int s )const{
-		v.insert(s);
-
-		bool var =true;
-		for( auto i : transitions){
-			if(i.first.first == s){
-				for(int x : i.second){
-					if(isStateFinal(x)){
-						return false;
-					}
-					if(var && v.find(x) == v.end()){
-						
-						var = DepthFirstSearch_empty(v,x);
-					}
-				}
-			}
-		}
-		return var;
-	}
 
 	bool Automaton::isLanguageEmpty() const{
 		bool init = false;
@@ -373,14 +330,14 @@ namespace fa {
 				}
 			}
 		}
-
+		// check if one state is initial and final
 		if(!init || !final){
 			return true;
 		}
 		
 		std::set<int> v;
 		for(auto x : tabStateInit){
-			if(!DepthFirstSearch_empty(v,x)){
+			if(!DepthFirstSearch(true,v,x)){
 				return false;
 			}	
 		}
@@ -389,9 +346,7 @@ namespace fa {
 	}
 
   bool Automaton::hasEmptyIntersectionWith(const Automaton& other) const{
-		
-	  fa::Automaton mrCuisine = createProduct(*this,other);
-		return mrCuisine.isLanguageEmpty();
+	  return createProduct(*this,other).isLanguageEmpty();
   }
 
 	std::set<int> Automaton::readSymbols(const std::set<int> sete,char a) const{
@@ -450,21 +405,15 @@ namespace fa {
 	return false;
   }
 
-  /* bool Automaton::isIncludedIn(const Automaton& other) const{ */
-	  /* fa::Automaton terminator = createComplement(other); */
-	  /* return hasEmptyIntersectionWith(terminator); */
-  /* } */
-
-
   bool Automaton::isIncludedIn(const Automaton& other) const {
-    fa::Automaton fa = other;
+    fa::Automaton CleanMate = other;
     for(auto alpha : alphabet) {
-      if(!fa.hasSymbol(alpha)) {
-        fa.addSymbol(alpha);
+      if(!CleanMate.hasSymbol(alpha)) {
+        CleanMate.addSymbol(alpha);
       }
     }
 	
-    return hasEmptyIntersectionWith(fa::Automaton::createComplement(fa));
+    return hasEmptyIntersectionWith(fa::Automaton::createComplement(CleanMate));
   }
 
   Automaton Automaton::createMirror(const Automaton& automaton){
@@ -566,20 +515,7 @@ namespace fa {
     fa::Automaton  glados = automaton;
 	if(!glados.isDeterministic()){glados = createDeterministic(glados);}
     if(!glados.isComplete()){glados = createComplete(glados);}
-
-    for(auto i = 0u ; i < glados.states.size(); ++i){
-      (glados.states[i].second ? glados.states[i].second = false: glados.states[i].second = true );
-    }
-
-
-	/* if(!var){ */
-	/* 	int binState = glados.findBinState(); */
-	/* 	for(auto i = 0 ; i <(int)glados.states.size(); ++i){ */
-	/* 		if(i == binState){ */
-	/* 			glados.states[i].second=true;} */
-	/* 	} */
-	/* } */
-      
+	for(auto &sta : glados.states){(sta.second.second) ? sta.second.second = false: sta.second.second = true;}
     return glados;
   }
 

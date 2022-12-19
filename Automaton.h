@@ -229,22 +229,59 @@ namespace fa {
 
 
   private:
-
-	bool DepthFirstSearch_empty(std::set<int>& v,int s ) const; 
-	void DepthFirstSearch(std::set<int>& v,int s )const;
-
+	/**
+	 * Depth-first search (DFS) is an algorithm for traversing or searching tree or graph data structures 
+	 */
+	bool DepthFirstSearch(bool emptyChoice,std::set<int>& v,int s )const;
+	
+	/**
+	 * Find if a bin state already exist in a automaton
+	 */
 	int findBinState() const;
 
+	/**
+	 * give a set of all final state
+	 */
 	std::set<int> getFinalState() const;
+
+	/**
+	 * give a set of all initial state
+	 */
 	std::set<int> getInitialState() const;
+
+	/**
+	 * give a set of state who can be read the char from a set of state
+	 */
 	std::set<int> readSymbols(const std::set<int> sete,char a) const;
+
+	/**
+	 * print the tab for minimal moore debug
+	 */
 	static void printMinimalMooreStepTab(std::vector<std::pair<char,std::vector<int>>> nZero,int& count);
 
+	/**
+	 * fill all line of the tab of minimal moore algo
+	 */
 	static std::vector<std::pair<char,std::vector<int>>> rempliTableauMoor(const Automaton& copy,std::vector<std::pair<char,std::vector<int>>> n,std::vector<int> sta);
-	static std::vector<int> returnLigne0Tab(std::vector<std::pair<char,std::vector<int>>> tabAvant);
 
+	/**
+	 * fill the firt line a minimal moore tab
+	 */
+	static std::vector<int> returnLigne0Tab(std::vector<std::pair<char,std::vector<int>>> tabAvant);
+	
+	/**
+	 * set of char for the alphabet
+	 */
     std::set<char> alphabet;
+
+	/**
+	 * map with an int for the state and a pair of bool to know if hes initial or final
+	 */
     std::map<int,std::pair<bool,bool>> states;
+
+	/**
+	 * map with pair in key for transition state and char to several state (vector<int>)
+	 */
     std::map<std::pair<int,char>,std::vector<int>> transitions;
 
   };

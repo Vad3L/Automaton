@@ -702,6 +702,32 @@ TEST(createComplement, valid) {
 
 }
 
+TEST(CreateComplement, Simple) {
+  fa::Automaton fa;
+
+  EXPECT_TRUE(fa.addState(7));
+  EXPECT_TRUE(fa.addState(10));
+  EXPECT_TRUE(fa.addState(13));
+  EXPECT_TRUE(fa.addSymbol('a'));
+  EXPECT_TRUE(fa.addSymbol('b'));
+
+  fa.setStateInitial(7);
+  fa.setStateFinal(13);
+
+  EXPECT_TRUE(fa.addTransition(7, 'a', 10));
+  EXPECT_TRUE(fa.addTransition(7, 'b', 13));
+  EXPECT_TRUE(fa.addTransition(10, 'a', 10));
+  EXPECT_TRUE(fa.addTransition(10, 'b', 13));
+  EXPECT_TRUE(fa.addTransition(13, 'a', 10));
+  EXPECT_TRUE(fa.addTransition(13, 'b', 13));
+  fa::Automaton fac = fa::Automaton::createComplement(fa);
+
+  fac.prettyPrint(std::cout);
+  EXPECT_TRUE(fac.isValid());
+  EXPECT_TRUE(fac.isComplete());
+  EXPECT_TRUE(fac.isDeterministic());
+}
+
 
 TEST(createComplement, noCompletNoDeterministic){
 	fa::Automaton fa;
@@ -753,7 +779,6 @@ TEST(createComplement, noInitialState){
 	EXPECT_TRUE(fa.isComplete());
 
 	EXPECT_FALSE(fa.isLanguageEmpty());
-	EXPECT_TRUE(fa.hasTransition(0,'a',0));
 	EXPECT_TRUE(fa.match("aaaaaaaaaaaaaa"));
 }
 
@@ -2336,7 +2361,6 @@ TEST(prettyPrint, Figure2Automatedexemple) {
   //dot -Tpng figure2.dot -o figure2.png
   //fa.dotPrint(monFlux);
 }
-
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
